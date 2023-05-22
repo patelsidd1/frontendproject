@@ -18,15 +18,12 @@ interface Admin {
 
 const AdminListPage: React.FC = () => {
   const [admins, setAdmins] = useState<Admin[]>([]);
-  const updateAdmins = (data: Admin[]) => {
-    setAdmins(data);
-  };
   useEffect(() => {
     const fetchAdmins = async () => {
       try {
         const response = await getAllAdmins();
         console.log(response);
-        updateAdmins(response);
+        setAdmins(response);
       } catch (error) {
         console.error("Error fetching admins:", error);
       }
