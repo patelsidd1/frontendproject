@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { Typography, List, ListItem, ListItemText } from '@material-ui/core';
-import { getAllAdmins } from '../../Backend/Api';
+import React, { useEffect, useState } from "react";
+import { Typography, List, ListItem, ListItemText } from "@material-ui/core";
+import { getAllAdmins } from "../../Backend/Api";
 
 interface Admin {
   id: number;
@@ -18,14 +18,17 @@ interface Admin {
 
 const AdminListPage: React.FC = () => {
   const [admins, setAdmins] = useState<Admin[]>([]);
-
+  const updateAdmins = (data: Admin[]) => {
+    setAdmins(data);
+  };
   useEffect(() => {
     const fetchAdmins = async () => {
       try {
         const response = await getAllAdmins();
-        setAdmins(response.data);
+        console.log(response);
+        updateAdmins(response);
       } catch (error) {
-        console.error('Error fetching admins:', error);
+        console.error("Error fetching admins:", error);
       }
     };
 
