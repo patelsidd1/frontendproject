@@ -1,24 +1,43 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import HomePage from './HomePage';
+import AdminLoginPage from './Pages/Admin/AdminLoginPage';
+import StudentLogin from './Pages/Student/StudentLogin';
+import StaffLogin from './Pages/Staff/StaffLogin'
+import InstituteLogin from './Pages/Institute/InstituteLogin';
+import Dashboard from './Pages/Admin/Dashboard';
 
-function App() {
+import StudentDashboard from './Pages/Student/StudentDashboard';
+import StaffDashboard from './Pages/Staff/StaffDashboard';
+import InstituteDashboard from './Pages/Institute/InstituteDashboard';
+import AdminListPage from './Pages/Admin/AdminListPage';
+
+
+
+
+const App: React.FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+  {/* <Navbar/> */}
+  
+  
+  
+    <Router>
+      <Routes>
+        <Route  path="/" element={<HomePage />} />
+        <Route path="/admin-login" element={<AdminListPage />} />
+        <Route path="/institute-login" element={<InstituteLogin />} />
+        <Route path="/staff-login" element={<StaffLogin/>} />
+        <Route path="/student-login" element={<StudentLogin/>} />
+        <Route path="/admin-dashboard" element={<Dashboard/>} />
+        <Route path="/student-dashboard" element={<StudentDashboard/>} />
+        <Route path="/staff-dashboard" element={<StaffDashboard/>} />
+        <Route path="/institute-dashboard" element={<InstituteDashboard/>} />
+        
+
+
+      </Routes>
+    </Router>
     </div>
   );
 }
