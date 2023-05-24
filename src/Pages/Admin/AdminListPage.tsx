@@ -53,21 +53,20 @@ interface Admin {
 const AdminListPage: React.FC = () => {
   const classes = useStyles();
   const [staffList, setStaffList] = useState<Admin[]>([]);
-
+  const [admins, setAdmins] = useState<Admin[]>([]);
   useEffect(() => {
-    fetchStaffList();
+    const fetchAdmins = async () => {
+      try {
+        const response = await getAllAdmins();
+        console.log(response);
+        setAdmins(response);
+      } catch (error) {
+        console.error("Error fetching admins:", error);
+      }
+    };
   }, []);
 
-  const fetchStaffList = async () => {
-    try {
-      // Replace with your API call to fetch staff list
-      const data =await getAllAdmins()
-      console.log(data)
-      setStaffList(data);
-    } catch (error) {
-      console.error('Error occurred while fetching staff list:', error);
-    }
-  };
+
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
