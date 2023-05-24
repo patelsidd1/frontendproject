@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Admin from './Models/Admin';
-const BASE_URL = 'https://bfb9-2405-201-600d-d107-29e3-9193-62da-7375.ngrok-free.app/attendance-backend';
+const BASE_URL = 'https://de41-2405-201-600d-d107-6821-c79e-1a1-27e9.ngrok-free.app/attendance-backend';
 
 const api = axios.create({
   baseURL: BASE_URL,
