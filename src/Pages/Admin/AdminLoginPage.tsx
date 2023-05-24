@@ -6,7 +6,6 @@ import {  signInWithEmailAndPassword   } from 'firebase/auth';
 import Admin from '../../Backend/Models/Admin';
 import { Link } from 'react-router-dom';
 import { auth } from '../../firebaseConfig';
-import ShowSnackbar from '../../Component/CustomSnackbar';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { loginAdmin } from '../../Backend/Api';

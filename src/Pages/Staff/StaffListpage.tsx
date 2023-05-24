@@ -48,9 +48,9 @@ interface Admin {
   city: string;
   postalCode: string;
   dob: string;
-  gender: string;
+  
 }
-const AdminListPage: React.FC = () => {
+const StaffListPage: React.FC = () => {
   const classes = useStyles();
   const [staffList, setStaffList] = useState<Admin[]>([]);
   const [admins, setAdmins] = useState<Admin[]>([]);
@@ -149,4 +149,4 @@ const AdminListPage: React.FC = () => {
   );
 };
 
-export default AdminListPage;
+export default StaffListPage;
