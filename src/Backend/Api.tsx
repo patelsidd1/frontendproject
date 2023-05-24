@@ -1,5 +1,6 @@
 import axios, { AxiosError } from "axios";
 import Admin from './Models/Admin';
+import Institute from "./Models/Institute";
 const BASE_URL = 'https://de41-2405-201-600d-d107-6821-c79e-1a1-27e9.ngrok-free.app/attendance-backend';
 
 const api = axios.create({
@@ -52,11 +53,25 @@ export const loginAdmin = async (firebaseId: string) => {
    const response = await api.post('/admin/registerInstitute', 
      data,
    );
-  //  
-  console.log(response.data)
-  //  return institute;
- } catch (error) {
-   console.error('Error occurred while logging in:', error);
-   throw error;
- }
+    const institue =Institute.parse(response.data)
+    return institue;
+  } catch (error) {
+    console.error('Error occurred while logging in:', error);
+    throw error;
+  }
  };
+
+
+ export const getAllInstitutes = async () => {
+  try {
+    console.log("axios");
+    
+   const response = await api.get('/admin/getAllInstitutes');
+   return response.data
+  } catch (error) {
+    console.error('Error occurred while logging in:', error);
+    throw error;
+  }
+ };
+
+ 
