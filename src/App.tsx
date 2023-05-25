@@ -15,6 +15,8 @@ import { List } from '@mui/material';
 import AdminListPage from './Pages/Admin/AdminListPage';
 import AddAdmin from './Pages/Admin/AddAdmin';
 import AddInstitute from './Pages/Admin/AddInstitute';
+import DeviceList from './Pages/Admin/DeviceList';
+import InstituteListPage from './Pages/Admin/InstituteListPage';
 
 // import RegisterAdminPage from './Pages/Admin/RegisterAdminPage';
 
@@ -32,8 +34,7 @@ const App: React.FC = () => {
     <Router>
       <Routes>
         <Route  path="/" element={<HomePage />} />
-        <Route path="/admin-login" element={<AddInstitute />} />
-        <Route path="/admin-login" element={<AdminListPage />} />
+        <Route path="/admin-login" element={<InstituteListPage/>} />
         <Route path="/institute-login" element={<InstituteLogin />} />
         <Route path="/staff-login" element={<StaffLogin/>} />
         <Route path="/student-login" element={<StudentLogin/>} />
