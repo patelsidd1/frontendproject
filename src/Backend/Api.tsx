@@ -1,6 +1,6 @@
 import axios, { AxiosError } from "axios";
 import Admin from './Models/Admin';
-const BASE_URL = 'https://bfb9-2405-201-600d-d107-29e3-9193-62da-7375.ngrok-free.app/attendance-backend';
+const BASE_URL = 'https://de41-2405-201-600d-d107-6821-c79e-1a1-27e9.ngrok-free.app/attendance-backend';
 
 const api = axios.create({
   baseURL: BASE_URL,
@@ -18,6 +18,8 @@ export const loginAdmin = async (firebaseId: string) => {
    throw error;
  }
  };
+
+
  export const getAllAdmins = async () => {
   try {
    const response = await api.get('/admin/getAdminList');
@@ -27,6 +29,8 @@ export const loginAdmin = async (firebaseId: string) => {
    throw error;
  }
  };
+
+
  export const registerAdmin = async (data: any) => {
   try {
     console.log("axios");
@@ -44,6 +48,7 @@ export const loginAdmin = async (firebaseId: string) => {
  };
 
 
+
  export const registerInstitute = async (data: any) => {
   try {
     console.log("axios");
@@ -55,6 +60,42 @@ export const loginAdmin = async (firebaseId: string) => {
   //  
   console.log(response.data)
   //  return institute;
+ } catch (error) {
+   console.error('Error occurred while logging in:', error);
+   throw error;
+ }
+ };
+
+ export const getAllInstitutes = async () => {
+  try {
+    console.log("axios");
+    
+   const response = await api.get('/admin/getAllInstitutes');
+   return response.data
+  } catch (error) {
+    console.error('Error occurred while logging in:', error);
+    throw error;
+  }
+ };
+ export const getAllStaffs = async () => {
+  try {
+    console.log("axios");
+    
+   const response = await api.get('/admin/getAllStaffs');
+   return response.data
+  } catch (error) {
+    console.error('Error occurred while logging in:', error);
+    throw error;
+  }
+ };
+
+
+
+ export const getAllDevices = async () => {
+  try {
+   const response = await api.get('/admin/getAllDevices');
+   console.log(response.data)
+    return response.data
  } catch (error) {
    console.error('Error occurred while logging in:', error);
    throw error;

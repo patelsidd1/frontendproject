@@ -7,8 +7,9 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Button from '@mui/material/Button';
-import { getAllAdmins } from '../../Backend/Api';
+
 import { log } from 'console';
+import { getAllInstitutes } from '../../Backend/Api';
 
 const useStyles = makeStyles({
   containerFluid: {
@@ -37,7 +38,7 @@ const useStyles = makeStyles({
   },
 });
 
-interface Admin {
+interface Institute {
   id: number;
   name: string;
   firebaseId: string;
@@ -47,34 +48,33 @@ interface Admin {
   address: string;
   city: string;
   postalCode: string;
-  dob: string;
-  gender: string;
+ 
 }
-const AdminListPage: React.FC = () => {
+const InstituteListPage: React.FC = () => {
   const classes = useStyles();
-  const [adminList, setAdmins] = useState<Admin[]>([]);
+  const [instituteList, setInstitutes] = useState<Institute[]>([]);
   useEffect(() => {
-    const fetchAdmins = async () => {
+    const fetchInstitutes = async () => {
       try {
-        const response = await getAllAdmins();
+        const response = await getAllInstitutes();
         console.log(response);
-        setAdmins(response);
+        setInstitutes(response);
       } catch (error) {
         console.error("Error fetching admins:", error);
       }
     };
-    fetchAdmins()
+    fetchInstitutes()
   }, []);
 
 
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
-    // Filter adminList based on search value and update state
-    const filteredAdminList = adminList.filter((admin) =>
-      admin.email.toLowerCase().includes(value.toLowerCase())
+    // Filter InstituteList based on search value and update state
+    const filteredInstituteList = instituteList.filter((institute) =>
+      institute.email.toLowerCase().includes(value.toLowerCase())
     );
-    setAdmins(filteredAdminList);
+    setInstitutes(filteredInstituteList);
   };
 
   return (
@@ -90,7 +90,7 @@ const AdminListPage: React.FC = () => {
                     <div className={`row align-items-center`}>
                       <div className={`col-8`}>
                         <h3 className={`mb-0`} style={{ color: 'brown' }}>
-                          ALL ADMINS
+                          ALL INSTITUTES
                         </h3>
                       </div>
                     </div>
@@ -101,31 +101,31 @@ const AdminListPage: React.FC = () => {
                       className={`form-control mb-4 ${classes.formControl}`}
                       id="searchInput"
                       type="text"
-                      placeholder="Search Admin"
+                      placeholder="Search Institute"
                       onChange={handleSearch}
                     />
-                    <h6 className={`heading-small text-muted mb-4 ${classes.headingSmall}`}>AdminListPage INFORMATION</h6>
+                    <h6 className={`heading-small text-muted mb-4 ${classes.headingSmall}`}>InstituteListPage INFORMATION</h6>
                     <div className={`table-responsive ${classes.table}`}>
                       <Table>
                         <TableHead>
                           <TableRow>
                             <TableCell>#</TableCell>
-                            <TableCell>ADMIN Email</TableCell>
+                            <TableCell>INSTITUTE Email</TableCell>
                             <TableCell>Name</TableCell>
                             <TableCell>Dept</TableCell>
-                            <TableCell>Manage Admin</TableCell>
+                            <TableCell>Manage Institute</TableCell>
                           </TableRow>
                         </TableHead>
                         <TableBody>
-                          {adminList.map((admin, index) => (
-                            <TableRow key={admin.email}>
+                          {instituteList.map((institute, index) => (
+                            <TableRow key={institute.email}>
                               <TableCell>{index + 1}</TableCell>
-                              <TableCell>{admin.email}</TableCell>
-                              <TableCell>{admin.name}</TableCell>
-                              <TableCell>{admin.mobile}</TableCell>
+                              <TableCell>{institute.email}</TableCell>
+                              <TableCell>{institute.name}</TableCell>
+                              <TableCell>{institute.mobile}</TableCell>
                               <TableCell>
                                 <Button
-                                  href={`/admin/settings/admin/${admin.email}`}
+                                  href={`/institute/settings/institute/${institute.email}`}
                                   variant="contained"
                                   size="small"
                                   color="primary"
@@ -149,4 +149,4 @@ const AdminListPage: React.FC = () => {
   );
 };
 
-export default AdminListPage;
+export default InstituteListPage;
