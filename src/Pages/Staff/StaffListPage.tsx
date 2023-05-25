@@ -7,7 +7,7 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Button from '@mui/material/Button';
-import { getAllAdmins } from '../../Backend/Api';
+import { getAllStaffs } from '../../Backend/Api';
 import { log } from 'console';
 
 const useStyles = makeStyles({
@@ -37,7 +37,7 @@ const useStyles = makeStyles({
   },
 });
 
-interface Admin {
+interface Staff {
   id: number;
   name: string;
   firebaseId: string;
@@ -48,33 +48,33 @@ interface Admin {
   city: string;
   postalCode: string;
   dob: string;
-  gender: string;
+  
 }
-const AdminListPage: React.FC = () => {
+const StaffListPage: React.FC = () => {
   const classes = useStyles();
-  const [adminList, setAdmins] = useState<Admin[]>([]);
+  const [staffList, setStaffs] = useState<Staff[]>([]);
   useEffect(() => {
-    const fetchAdmins = async () => {
+    const fetchStaffs = async () => {
       try {
-        const response = await getAllAdmins();
+        const response = await getAllStaffs();
         console.log(response);
-        setAdmins(response);
+        setStaffs(response);
       } catch (error) {
-        console.error("Error fetching admins:", error);
+        console.error("Error fetching staffs:", error);
       }
     };
-    fetchAdmins()
+    fetchStaffs()
   }, []);
 
 
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
-    // Filter adminList based on search value and update state
-    const filteredAdminList = adminList.filter((admin) =>
-      admin.email.toLowerCase().includes(value.toLowerCase())
+    // Filter staffList based on search value and update state
+    const filteredStaffList = staffList.filter((staff) =>
+      staff.email.toLowerCase().includes(value.toLowerCase())
     );
-    setAdmins(filteredAdminList);
+    setStaffs(filteredStaffList);
   };
 
   return (
@@ -90,7 +90,7 @@ const AdminListPage: React.FC = () => {
                     <div className={`row align-items-center`}>
                       <div className={`col-8`}>
                         <h3 className={`mb-0`} style={{ color: 'brown' }}>
-                          ALL ADMINS
+                          ALL STAFFS
                         </h3>
                       </div>
                     </div>
@@ -101,31 +101,31 @@ const AdminListPage: React.FC = () => {
                       className={`form-control mb-4 ${classes.formControl}`}
                       id="searchInput"
                       type="text"
-                      placeholder="Search Admin"
+                      placeholder="Search Staff"
                       onChange={handleSearch}
                     />
-                    <h6 className={`heading-small text-muted mb-4 ${classes.headingSmall}`}>AdminListPage INFORMATION</h6>
+                    <h6 className={`heading-small text-muted mb-4 ${classes.headingSmall}`}>STAFFListPage INFORMATION</h6>
                     <div className={`table-responsive ${classes.table}`}>
                       <Table>
                         <TableHead>
                           <TableRow>
                             <TableCell>#</TableCell>
-                            <TableCell>ADMIN Email</TableCell>
+                            <TableCell>Staff Email</TableCell>
                             <TableCell>Name</TableCell>
                             <TableCell>Dept</TableCell>
-                            <TableCell>Manage Admin</TableCell>
+                            <TableCell>Manage Staff</TableCell>
                           </TableRow>
                         </TableHead>
                         <TableBody>
-                          {adminList.map((admin, index) => (
-                            <TableRow key={admin.email}>
+                          {staffList.map((staff, index) => (
+                            <TableRow key={staff.email}>
                               <TableCell>{index + 1}</TableCell>
-                              <TableCell>{admin.email}</TableCell>
-                              <TableCell>{admin.name}</TableCell>
-                              <TableCell>{admin.mobile}</TableCell>
+                              <TableCell>{staff.email}</TableCell>
+                              <TableCell>{staff.name}</TableCell>
+                              <TableCell>{staff.mobile}</TableCell>
                               <TableCell>
                                 <Button
-                                  href={`/admin/settings/admin/${admin.email}`}
+                                  href={`/admin/settings/staff/${staff.email}`}
                                   variant="contained"
                                   size="small"
                                   color="primary"
@@ -149,4 +149,4 @@ const AdminListPage: React.FC = () => {
   );
 };
 
-export default AdminListPage;
+export default StaffListPage;
