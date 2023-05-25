@@ -16,6 +16,7 @@ import AdminListPage from './Pages/Admin/AdminListPage';
 import AddAdmin from './Pages/Admin/AddAdmin';
 import AddInstitute from './Pages/Admin/AddInstitute';
 import InstituteListPage from './Pages/Admin/InstituteListPage';
+import StaffListPage from './Pages/Staff/StaffListPage';
 
 // import RegisterAdminPage from './Pages/Admin/RegisterAdminPage';
 
@@ -33,7 +34,7 @@ const App: React.FC = () => {
     <Router>
       <Routes>
         <Route  path="/" element={<HomePage />} />
-        <Route path="/admin-login" element={<InstituteListPage />} />
+        <Route path="/admin-login" element={<StaffListPage/>} />
         <Route path="/institute-login" element={<InstituteLogin />} />
         <Route path="/staff-login" element={<StaffLogin/>} />
         <Route path="/student-login" element={<StudentLogin/>} />

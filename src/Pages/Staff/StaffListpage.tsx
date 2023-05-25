@@ -7,7 +7,7 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Button from '@mui/material/Button';
-import { getAllAdmins } from '../../Backend/Api';
+import { getAllStaffs } from '../../Backend/Api';
 import { log } from 'console';
 
 const useStyles = makeStyles({
@@ -37,7 +37,7 @@ const useStyles = makeStyles({
   },
 });
 
-interface Admin {
+interface Staff {
   id: number;
   name: string;
   firebaseId: string;
@@ -52,18 +52,18 @@ interface Admin {
 }
 const StaffListPage: React.FC = () => {
   const classes = useStyles();
-  const [staffList, setStaffList] = useState<Admin[]>([]);
-  const [admins, setAdmins] = useState<Admin[]>([]);
+  const [staffList, setStaffs] = useState<Staff[]>([]);
   useEffect(() => {
-    const fetchAdmins = async () => {
+    const fetchStaffs = async () => {
       try {
-        const response = await getAllAdmins();
+        const response = await getAllStaffs();
         console.log(response);
-        setAdmins(response);
+        setStaffs(response);
       } catch (error) {
-        console.error("Error fetching admins:", error);
+        console.error("Error fetching staffs:", error);
       }
     };
+    fetchStaffs()
   }, []);
 
 
@@ -74,7 +74,7 @@ const StaffListPage: React.FC = () => {
     const filteredStaffList = staffList.filter((staff) =>
       staff.email.toLowerCase().includes(value.toLowerCase())
     );
-    setStaffList(filteredStaffList);
+    setStaffs(filteredStaffList);
   };
 
   return (
@@ -104,7 +104,7 @@ const StaffListPage: React.FC = () => {
                       placeholder="Search Staff"
                       onChange={handleSearch}
                     />
-                    <h6 className={`heading-small text-muted mb-4 ${classes.headingSmall}`}>STAFFAdminListPage INFORMATION</h6>
+                    <h6 className={`heading-small text-muted mb-4 ${classes.headingSmall}`}>STAFFListPage INFORMATION</h6>
                     <div className={`table-responsive ${classes.table}`}>
                       <Table>
                         <TableHead>
