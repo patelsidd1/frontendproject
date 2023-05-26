@@ -53,7 +53,7 @@ const navigate=useNavigate();
     event.preventDefault();
 
     registerInstitute(formData).then((institute)=>{
-        toast.success("registerInstitute Successful!!\nWelcome ")
+        toast.success("registerInstitute Successful!!\nWelcome " + institute.name)
         const delay = 2000; // 2 seconds
 
     const timeout = setTimeout(() => {
