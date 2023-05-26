@@ -106,3 +106,16 @@ export const loginAdmin = async (firebaseId: string) => {
    throw error;
  }
  };
+ export const resetPassword = async (email:string) => {
+  try {
+   const response = await api.post('/admin/resetPassword', {
+    firebaseid:1,
+    email,
+  });
+   console.log(response.data)
+    return response.data
+ } catch (error) {
+   console.error('Error occurred while logging in:', error);
+   throw error;
+ }
+ };

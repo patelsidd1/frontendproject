@@ -35,7 +35,7 @@ const RoundedButton = styled(Button)({
   marginTop: 16,
 });
 
-const AdminLoginPage: React.FC = () => {
+const AdminLoginPage1: React.FC = () => {
   return (
     <BackgroundImage>
       <LoginForm>
@@ -51,4 +51,4 @@ const AdminLoginPage: React.FC = () => {
   );
 }
 
-export default AdminLoginPage;
+export default AdminLoginPage1;
