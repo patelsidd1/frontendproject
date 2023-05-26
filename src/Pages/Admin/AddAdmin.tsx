@@ -1,94 +1,116 @@
-import React, { useState } from 'react';
-import { Container, Grid, Card, CardHeader, CardContent, Typography, TextField, FormControl, InputLabel, Select, MenuItem, Button, SelectChangeEvent } from '@mui/material';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { LocalizationProvider } from '@mui/x-date-pickers';
-import RoundedButton from '../../Component/RoundedButton';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import { registerAdmin } from '../../Backend/Api';
-import { useNavigate } from 'react-router-dom'
+import React, { useState } from "react";
+import {
+  Container,
+  Grid,
+  Card,
+  CardHeader,
+  CardContent,
+  Typography,
+  TextField,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Button,
+  SelectChangeEvent,
+} from "@mui/material";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import RoundedButton from "../../Component/RoundedButton";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { registerAdmin } from "../../Backend/Api";
+import { useNavigate } from "react-router-dom";
 
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import AdminSidebar from "./AdminSidebar";
 interface AdminFormData {
   name: string;
-  firebaseId:string;
+  firebaseId: string;
   email: string;
   mobile: string;
   address: string;
   city: string;
   postalCode: string;
   dob: Date | null;
-  
+
   gender: string;
 }
 
 const AddAdmin: React.FC = () => {
-const navigate=useNavigate();
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState<AdminFormData>({
-    name: '',
-    firebaseId:'MjRP3sphJghK5eaYfrzwn18vNYR2',
-    email: '',
-    mobile: '',
-    address: '',
-    city: '',
-    postalCode: '',
+    name: "",
+    firebaseId: "MjRP3sphJghK5eaYfrzwn18vNYR2",
+    email: "",
+    mobile: "",
+    address: "",
+    city: "",
+    postalCode: "",
     dob: null,
-    gender: ''
+    gender: "",
   });
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    setFormData(prevData => ({ ...prevData, [name]: value }));
-
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
-  const handleInputChanged = (event: SelectChangeEvent<string>, child: React.ReactNode) => {
+  const handleInputChanged = (
+    event: SelectChangeEvent<string>,
+    child: React.ReactNode
+  ) => {
     const { name, value } = event.target;
-    setFormData(prevData => ({ ...prevData, [name]: value }));
-
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
   const handleDateChange = (date: Date | null) => {
-    setFormData(prevData => ({ ...prevData, dob: date }));
+    setFormData((prevData) => ({ ...prevData, dob: date }));
   };
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
 
-    registerAdmin(formData).then((admin)=>{
-        toast.success("registerAdmin Successful!!\nWelcome "+admin.name)
+    registerAdmin(formData)
+      .then((admin) => {
+        toast.success("registerAdmin Successful!!\nWelcome " + admin.name);
         const delay = 2000; // 2 seconds
 
-    const timeout = setTimeout(() => {
-      // Code to execute after the delay
-      console.log('Delayed code executed');
-      navigate('/admin-dashboard')
+        const timeout = setTimeout(() => {
+          // Code to execute after the delay
+          console.log("Delayed code executed");
+          navigate("/admin-dashboard");
         }, delay);
 
-            return () => {
-            // Cleanup function to cancel the timeout if the component is unmounted
-            clearTimeout(timeout);
-            };
-        
-       }).catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      toast.error(error.response.data)
-  });
-};
+        return () => {
+          // Cleanup function to cancel the timeout if the component is unmounted
+          clearTimeout(timeout);
+        };
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        toast.error(error.response.data);
+      });
+  };
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <ToastContainer />
+      <ToastContainer />
 
       <Container>
         <Grid container justifyContent="center" mt={5}>
           <Grid item xs={12} md={6}>
             <Card>
-              <CardHeader title="ADD NEW ADMIN" sx={{ bgcolor: 'brown', color: 'white' }} />
+              <CardHeader
+                title="ADD NEW ADMIN"
+                sx={{ bgcolor: "brown", color: "white" }}
+              />
               <CardContent>
                 <form onSubmit={handleSubmit}>
-                  <Typography variant="subtitle2" mb={2}>User information</Typography>
+                  <Typography variant="subtitle2" mb={2}>
+                    User information
+                  </Typography>
                   <Grid container spacing={2}>
                     <Grid item xs={12} md={6}>
                       <TextField
@@ -105,7 +127,6 @@ const navigate=useNavigate();
                         label="DOB"
                         value={formData.dob}
                         onChange={handleDateChange}
-                        
                       />
                     </Grid>
                     <Grid item xs={12} md={6}>
@@ -133,7 +154,9 @@ const navigate=useNavigate();
                     </Grid>
                   </Grid>
 
-                  <Typography variant="subtitle2" mb={2} mt={4}>Contact information</Typography>
+                  <Typography variant="subtitle2" mb={2} mt={4}>
+                    Contact information
+                  </Typography>
                   <Grid container spacing={2}>
                     <Grid item xs={12}>
                       <TextField
@@ -180,7 +203,13 @@ const navigate=useNavigate();
                     </Grid>
                   </Grid>
 
-                  <RoundedButton variant="contained" color="primary" type="submit">REGISTER ADMIN</RoundedButton>
+                  <RoundedButton
+                    variant="contained"
+                    color="primary"
+                    type="submit"
+                  >
+                    REGISTER ADMIN
+                  </RoundedButton>
                 </form>
               </CardContent>
             </Card>
@@ -189,6 +218,6 @@ const navigate=useNavigate();
       </Container>
     </LocalizationProvider>
   );
-}
+};
 
 export default AddAdmin;

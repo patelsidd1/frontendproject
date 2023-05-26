@@ -45,7 +45,7 @@ const DeviceList: React.FC = () => {
   useEffect(() => {
     const fetchDevices = async () => {
       try {
-        const response = await getAllAdmins();
+        const response = await getAllDevices();
         console.log(response);
         setDevices(response);
       } catch (error) {

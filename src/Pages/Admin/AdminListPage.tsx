@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core';
-import TextField from '@mui/material/TextField';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Button from '@mui/material/Button';
-import { getAllAdmins } from '../../Backend/Api';
-import { log } from 'console';
+import React, { useEffect, useState } from "react";
+import { makeStyles } from "@material-ui/core";
+import TextField from "@mui/material/TextField";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Button from "@mui/material/Button";
+import { getAllAdmins } from "../../Backend/Api";
+import { log } from "console";
 
 const useStyles = makeStyles({
   containerFluid: {
@@ -20,8 +20,8 @@ const useStyles = makeStyles({
   header: {
     // Add your styles for header class here
     height: 100,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center top',
+    backgroundSize: "cover",
+    backgroundPosition: "center top",
   },
   card: {
     // Add your styles for card class here
@@ -63,10 +63,8 @@ const AdminListPage: React.FC = () => {
         console.error("Error fetching admins:", error);
       }
     };
-    fetchAdmins()
+    fetchAdmins();
   }, []);
-
-
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
@@ -81,7 +79,9 @@ const AdminListPage: React.FC = () => {
     <div className={classes.containerFluid}>
       <section id="content-wrapper">
         <main role="main" className={`pt-5 main ${classes.mainContent}`}>
-          <div className={`header pb-4 pb-sm-8 pt-5 pt-lg-8 d-flex align-items-center ${classes.header}`}></div>
+          <div
+            className={`header pb-4 pb-sm-8 pt-5 pt-lg-8 d-flex align-items-center ${classes.header}`}
+          ></div>
           <div className={`container-fluid mt--7 ${classes.containerFluid}`}>
             <div className="row">
               <div className="col-xl-12 order-xl-1">
@@ -89,7 +89,7 @@ const AdminListPage: React.FC = () => {
                   <div className={`card-header bg-white border-0`}>
                     <div className={`row align-items-center`}>
                       <div className={`col-8`}>
-                        <h3 className={`mb-0`} style={{ color: 'brown' }}>
+                        <h3 className={`mb-0`} style={{ color: "brown" }}>
                           ALL ADMINS
                         </h3>
                       </div>
@@ -104,7 +104,11 @@ const AdminListPage: React.FC = () => {
                       placeholder="Search Admin"
                       onChange={handleSearch}
                     />
-                    <h6 className={`heading-small text-muted mb-4 ${classes.headingSmall}`}>AdminListPage INFORMATION</h6>
+                    <h6
+                      className={`heading-small text-muted mb-4 ${classes.headingSmall}`}
+                    >
+                      AdminListPage INFORMATION
+                    </h6>
                     <div className={`table-responsive ${classes.table}`}>
                       <Table>
                         <TableHead>
