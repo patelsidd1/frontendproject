@@ -17,7 +17,6 @@ import AddAdmin from './Pages/Admin/AddAdmin';
 import AddInstitute from './Pages/Admin/AddInstitute';
 import DeviceList from './Pages/Admin/DeviceList';
 import InstituteListPage from './Pages/Admin/InstituteListPage';
-import StaffListPage from './Pages/Staff/StaffListPage';
 
 // import RegisterAdminPage from './Pages/Admin/RegisterAdminPage';
 

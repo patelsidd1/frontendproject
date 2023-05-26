@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 
-import { getAllInstitutes } from "../../Backend/Api";
+import { getAllInstitutes } from "../../../Backend/Api";
 import InstituteSelect from "./Select";
-import Institute from "../../Backend/Models/Institute";
-const Drop: React.FC< any > = ({deviceId}) => {
+import Institute from "../../../Backend/Models/Institute";
+const Drop: React.FC<any> = ({ deviceId }) => {
   const [institutes, setInstitutes] = useState<Institute[]>([]);
 
   useEffect(() => {
