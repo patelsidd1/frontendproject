@@ -67,30 +67,9 @@ export const loginAdmin = async (firebaseId: string) => {
  };
 
 
- export const getAllInstitutes = async () => {
-  try {
-    console.log("axios");
-    
-   const response = await api.get('/admin/getAllInstitutes');
-   return response.data
-  } catch (error) {
-    console.error('Error occurred while logging in:', error);
-    throw error;
-  }
- };
+ 
 
 
- export const getAllStaffs = async () => {
-  try {
-    console.log("axios");
-    
-   const response = await api.get('/admin/getAllStaffs');
-   return response.data
-  } catch (error) {
-    console.error('Error occurred while logging in:', error);
-    throw error;
-  }
- };
 
  export const getAllInstitutes = async () => {
   try {

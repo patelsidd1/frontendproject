@@ -10,6 +10,7 @@ import Button from '@mui/material/Button';
 
 import { log } from 'console';
 import { getAllInstitutes } from '../../Backend/Api';
+import Institute from '../../Backend/Models/Institute';
 
 const useStyles = makeStyles({
   containerFluid: {
@@ -38,18 +39,7 @@ const useStyles = makeStyles({
   },
 });
 
-interface Institute {
-  id: number;
-  name: string;
-  firebaseId: string;
-  authority: string;
-  email: string;
-  mobile: string;
-  address: string;
-  city: string;
-  postalCode: string;
- 
-}
+
 const InstituteListPage: React.FC = () => {
   const classes = useStyles();
   const [instituteList, setInstitutes] = useState<Institute[]>([]);

@@ -10,6 +10,7 @@ import Button from '@mui/material/Button';
 import { getAllAdmins, getAllDevices } from '../../Backend/Api';
 import { log } from 'console';
 import Device from '../../Backend/Models/Device';
+import Drop from '../Institute/InstituteSelect';
 
 const useStyles = makeStyles({
   containerFluid: {
@@ -45,7 +46,7 @@ const DeviceList: React.FC = () => {
   useEffect(() => {
     const fetchDevices = async () => {
       try {
-        const response = await getAllAdmins();
+        const response = await getAllDevices();
         console.log(response);
         setDevices(response);
       } catch (error) {
@@ -108,19 +109,12 @@ const DeviceList: React.FC = () => {
                         <TableBody>
                           {deviceList.map((staff, index) => (
                             <TableRow key={"staff.id"}>
-                              <TableCell>{index + 1}</TableCell>
-                              <TableCell>{"staff.id"}</TableCell>
-                              <TableCell>{"staff.id"}</TableCell>
-                              <TableCell>{"staff.enabled"}</TableCell>
+                              <TableCell>{staff.id}</TableCell>
+                              <TableCell>{staff.id}</TableCell>
+                              <TableCell>{staff.id}</TableCell>
+                              <TableCell>{staff.enabled}</TableCell>
                               <TableCell>
-                                <Button
-                                  href={`/admin/settings/staff/${staff.id}`}
-                                  variant="contained"
-                                  size="small"
-                                  color="primary"
-                                >
-                                  Settings
-                                </Button>
+                                <Drop deviceId={staff.id}/>
                               </TableCell>
                             </TableRow>
                           ))}
