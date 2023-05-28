@@ -26,12 +26,12 @@ import { Link } from "react-router-dom";
 import Institute from "../../Backend/Models/Institute";
 import InstituteProfile from "./InstituteProfile";
 import AddCourse from "./AddCourse";
-import CourseListPage from "./StaffListPage";
 import AddStudent from "./AddStudent";
 import InstituteDeviceList from "./InstituteDeviceList";
 import StudentListPage from "./StudentListPage";
 import AddStaff from "./AddStaff";
 import StaffListPage from "./StaffListPage";
+import CourseListPage from "./CourseListPage";
 const drawerWidth = 240;
 
 const openedMixin = (theme: Theme): CSSObject => ({
@@ -98,7 +98,7 @@ const InstituteSidebar = (props: any) => {
     <AddStaff />,
     <StaffListPage />,
     <AddCourse />,
-    <AddStudent />,
+    <CourseListPage />,
     <StudentListPage />,
     <InstituteDeviceList />,
   ];
