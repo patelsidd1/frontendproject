@@ -65,28 +65,12 @@ export const loginAdmin = async (firebaseId: string) => {
     throw error;
   }
  };
-
-
- 
-
-
-
  export const getAllInstitutes = async () => {
   try {
     console.log("axios");
     
    const response = await api.get('/admin/getAllInstitutes');
-   return response.data
-  } catch (error) {
-    console.error('Error occurred while logging in:', error);
-    throw error;
-  }
- };
- export const getAllStaffs = async () => {
-  try {
-    console.log("axios");
-    
-   const response = await api.get('/admin/getAllStaffs');
+   console.log(response.data)
    return response.data
   } catch (error) {
     console.error('Error occurred while logging in:', error);
@@ -118,4 +102,44 @@ export const loginAdmin = async (firebaseId: string) => {
    console.error('Error occurred while logging in:', error);
    throw error;
  }
+ };
+ export const addDevice = async (data:any) => {
+  try {
+   const response = await api.post('/admin/addDevice', data);
+   console.log(response.data)
+    return response.data
+ } catch (error) {
+   console.error('Error occurred while logging in:', error);
+   throw error;
+ }
+ };
+
+//  -------------Institue-------------
+ export const registerStaff = async (data: any) => {
+  try {
+    console.log("axios");
+    
+    console.log(data)
+   const response = await api.post('/instutite/registerNewStaff', 
+     data,
+   );
+   const admin=Admin.parse(response.data);
+   return admin;
+ } catch (error) {
+   console.error('Error occurred while logging in:', error);
+   throw error;
+ }
+ };
+
+ export const getAllStaffs = async () => {
+  try {
+    console.log("axios");
+    
+   const response = await api.get('/institute/getAllStaffs');
+   console.log(response.data)
+   return response.data
+  } catch (error) {
+    console.error('Error occurred while logging in:', error);
+    throw error;
+  }
  };
