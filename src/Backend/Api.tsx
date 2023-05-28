@@ -142,4 +142,30 @@ export const loginAdmin = async (firebaseId: string) => {
     console.error('Error occurred while logging in:', error);
     throw error;
   }
+
  };
+ export const registerNewCourse = async (data: any) => {
+  try {
+    console.log("axios");
+    
+    console.log(data)
+   const response = await api.post('/institute/registerNewCourse', 
+     data,
+   );
+   const admin=Admin.parse(response.data);
+   return admin;
+ } catch (error) {
+   console.error('Error occurred while logging in:', error);
+   throw error;
+ }
+ };
+ export const getAllCourses = async () => {
+  try {
+   const response = await api.get('/institute/getAllCourses');
+   return response.data;
+ } catch (error) {
+   console.error('Error occurred while logging in:', error);
+   throw error;
+ }
+ };
+
