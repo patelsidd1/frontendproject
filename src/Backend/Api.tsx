@@ -120,7 +120,7 @@ export const loginAdmin = async (firebaseId: string) => {
     console.log("axios");
     
     console.log(data)
-   const response = await api.post('/instutite/registerNewStaff', 
+   const response = await api.post('/institute/createNewStaff', 
      data,
    );
    const admin=Admin.parse(response.data);

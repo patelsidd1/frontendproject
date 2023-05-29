@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Container,
   Grid,
@@ -13,16 +13,24 @@ import {
   MenuItem,
   Button,
   SelectChangeEvent,
+  Checkbox,
+  FormControlLabel,
+  List,
+  ListItem,
+  ListItemText,
+  ListSubheader,
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import RoundedButton from "../../Component/RoundedButton";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { registerAdmin, registerStaff } from "../../Backend/Api";
+import { getAllCourses, registerAdmin, registerStaff } from "../../Backend/Api";
 import { useNavigate } from "react-router-dom";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Staffs from "./components/Staffs";
+import Institute from "../../Backend/Models/Institute";
 interface AdminFormData {
   name: string;
   firebaseId: string;
@@ -32,12 +40,15 @@ interface AdminFormData {
   city: string;
   postalCode: string;
   dob: Date | null;
-    institute:{}
+  institute: {};
   gender: string;
+  courses:any[]
 }
 
 const AddStaff: React.FC = () => {
   const navigate = useNavigate();
+  const [institutes, setInstitutes] = useState<Institute[]>([]);
+  const [courses, setCourses] = useState<Set<Institute>>(new Set());
 
   const [formData, setFormData] = useState<AdminFormData>({
     name: "",
@@ -50,10 +61,21 @@ const AddStaff: React.FC = () => {
     dob: null,
     gender: "",
     institute: {
-        id: 1
-      }
-  });
+      id: 1,
+    },
+    courses:[]
 
+  });
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getAllCourses();
+      console.log("selectins");
+      console.log(data);
+      setInstitutes(data);
+    };
+
+    fetchData();
+  }, []);
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
@@ -72,7 +94,14 @@ const AddStaff: React.FC = () => {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-
+    let course: { id: number; }[]=[];
+    courses.forEach((value)=>{
+      let val={id:value.id}
+      course.push(val)
+    })
+    var data=formData;
+    data.courses=course;
+    console.log(data)
     registerStaff(formData)
       .then((admin) => {
         toast.success("registerAdmin Successful!!\nWelcome " + admin.name);
@@ -81,7 +110,6 @@ const AddStaff: React.FC = () => {
         const timeout = setTimeout(() => {
           // Code to execute after the delay
           console.log("Delayed code executed");
-          navigate("/admin-dashboard");
         }, delay);
 
         return () => {
@@ -94,6 +122,20 @@ const AddStaff: React.FC = () => {
         const errorMessage = error.message;
         toast.error(error.response.data);
       });
+  };
+  const handleStaffChange = (event: Institute,checked:boolean) => {
+    let set=courses;
+    console.log(courses)
+
+    if(checked){
+      set.add(event);
+    }
+    else{
+      set.delete(event);
+
+    }
+    setCourses(set)
+    console.log(courses)
   };
 
   return (
@@ -202,6 +244,42 @@ const AddStaff: React.FC = () => {
                         value={formData.mobile}
                         onChange={handleInputChange}
                       />
+                    </Grid>
+                    <Grid item xs={12} paddingBottom={5}>
+                      <List
+                        sx={{
+                          width: "100%",
+                          maxWidth: 360,
+                          bgcolor: "background.paper",
+                          position: "relative",
+                          overflow: "auto",
+                          maxHeight: 300,
+                          "& ul": { padding: 0 },
+                        }}
+                        subheader={<li />}
+                      >
+                        {institutes.map((staff: Institute, index: any)  => {
+                          return (
+                            <ListItem
+                              key={staff.id}
+                              secondaryAction={
+                                <Checkbox
+                                  edge="end"
+                                   onChange={(event: React.ChangeEvent<HTMLInputElement>, checked: boolean)=>handleStaffChange(staff,checked)}
+                                  // checked={checked.indexOf(value) !== -1}
+                                  inputProps={{ "aria-labelledby": staff.name }}
+                                />
+                              }
+                              disablePadding
+                            >
+                              <ListItemText
+                                id={staff.name}
+                                primary={` ${staff.name }`}
+                              />
+                            </ListItem>
+                          );
+                        })}
+                      </List>
                     </Grid>
                   </Grid>
 

@@ -10,7 +10,6 @@ import Button from "@mui/material/Button";
 import { getAllAdmins, getAllDevices } from "../../Backend/Api";
 import { log } from "console";
 import Device from "../../Backend/Models/Device";
-import Drop from "./components/InstituteSelect";
 
 const useStyles = makeStyles({
   containerFluid: {
@@ -117,7 +116,7 @@ const InstituteDeviceList: React.FC = () => {
                               <TableCell>{staff.id}</TableCell>
                               <TableCell>{staff.enabled}</TableCell>
                               <TableCell>
-                                <Drop deviceId={staff.id} />
+                                {/* <Drop deviceId={staff.id} /> */}
                               </TableCell>
                             </TableRow>
                           ))}
