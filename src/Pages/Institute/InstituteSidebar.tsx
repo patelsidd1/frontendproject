@@ -22,7 +22,7 @@ import { Avatar, Stack } from "@mui/material";
 import { deepOrange } from "@mui/material/colors";
 import RoundedButton from "../../Component/RoundedButton";
 import { withRouter } from "../../Component/WithRouter";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Institute from "../../Backend/Models/Institute";
 import InstituteProfile from "./InstituteProfile";
 import AddCourse from "./AddCourse";
@@ -32,6 +32,8 @@ import StudentListPage from "./StudentListPage";
 import AddStaff from "./AddStaff";
 import StaffListPage from "./StaffListPage";
 import CourseListPage from "./CourseListPage";
+import { Subject } from "@mui/icons-material";
+import AddSubject from "./AddSubject";
 const drawerWidth = 240;
 
 const openedMixin = (theme: Theme): CSSObject => ({
@@ -86,7 +88,9 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 const InstituteSidebar = (props: any) => {
-  console.log(props);
+  const { state } = useLocation();
+  const { institute } = state;
+  console.log(institute);
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [pageNo, setPage] = React.useState(0);
@@ -94,13 +98,16 @@ const InstituteSidebar = (props: any) => {
     setOpen(!open);
   };
   const pages = [
-    <InstituteProfile/>,
-    <AddStaff />,
-    <StaffListPage />,
-    <AddCourse />,
-    <CourseListPage />,
-    <StudentListPage />,
-    <InstituteDeviceList />,
+    <InstituteProfile institute={institute} />,
+    <AddStaff institute={institute} />,
+    <StaffListPage institute={institute} />,
+    <AddCourse institute={institute} />,
+    <CourseListPage institute={institute} />,
+    <AddSubject institute={institute}></AddSubject>,
+    <AddSubject institute={institute}></AddSubject>,
+    <AddStudent institute={institute} />,
+    <StudentListPage institute={institute} />,
+    <InstituteDeviceList institute={institute} />,
   ];
   const adminOptions = [
     {
@@ -122,10 +129,30 @@ const InstituteSidebar = (props: any) => {
       onClick: 4,
     },
   ];
+  const subjectOptions = [
+    {
+      name: "Add Subject",
+      onClick: 5,
+    },
+    {
+      name: "All Subject",
+      onClick: 6,
+    },
+  ];
+  const studentOptions = [
+    {
+      name: "Add Student",
+      onClick: 7,
+    },
+    {
+      name: "All Student",
+      onClick: 8,
+    },
+  ];
   const deviceOptions = [
     {
-      name: "Devices",
-      onClick: 5,
+      name: "Add Student",
+      onClick: 9,
     },
   ];
   return (
@@ -184,6 +211,72 @@ const InstituteSidebar = (props: any) => {
         <Divider />
         <List>
           {institueOptions.map((item, index) => (
+            <ListItem
+              key={item.name}
+              disablePadding
+              sx={{ display: "block" }}
+              onClick={() => setPage(item.onClick)}
+            >
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? "initial" : "center",
+                  px: 2.5,
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : "auto",
+                    justifyContent: "center",
+                  }}
+                >
+                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                </ListItemIcon>
+                <ListItemText
+                  primary={item.name}
+                  sx={{ opacity: open ? 1 : 0 }}
+                />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+        <Divider />
+        <List>
+          {subjectOptions.map((item, index) => (
+            <ListItem
+              key={item.name}
+              disablePadding
+              sx={{ display: "block" }}
+              onClick={() => setPage(item.onClick)}
+            >
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? "initial" : "center",
+                  px: 2.5,
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : "auto",
+                    justifyContent: "center",
+                  }}
+                >
+                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                </ListItemIcon>
+                <ListItemText
+                  primary={item.name}
+                  sx={{ opacity: open ? 1 : 0 }}
+                />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+        <Divider />
+        <List>
+          {studentOptions.map((item, index) => (
             <ListItem
               key={item.name}
               disablePadding

@@ -10,6 +10,7 @@ import Button from "@mui/material/Button";
 import { getAllAdmins, getAllCourses } from "../../Backend/Api";
 import { log } from "console";
 import Course from "../../Backend/Models/Course";
+import Institute from "../../Backend/Models/Institute";
 
 const useStyles = makeStyles({
   containerFluid: {
@@ -38,14 +39,13 @@ const useStyles = makeStyles({
   },
 });
 
- 
-const CourseListPage: React.FC = () => {
+const CourseListPage: React.FC<any> = (institute: Institute) => {
   const classes = useStyles();
   const [courses, setAdmins] = useState<Course[]>([]);
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await getAllCourses();
+        const response = await getAllCourses(institute.id);
         console.log(response);
         setAdmins(response);
       } catch (error) {
@@ -96,7 +96,7 @@ const CourseListPage: React.FC = () => {
                     <h6
                       className={`heading-small text-muted mb-4 ${classes.headingSmall}`}
                     >
-                      CourseListPage 
+                      CourseListPage
                     </h6>
                     <div className={`table-responsive ${classes.table}`}>
                       <Table>
@@ -124,6 +124,14 @@ const CourseListPage: React.FC = () => {
                                   color="primary"
                                 >
                                   Settings
+                                </Button>
+
+                                <Button
+                                  variant="contained"
+                                  size="small"
+                                  color="primary"
+                                >
+                                  Add Students
                                 </Button>
                               </TableCell>
                             </TableRow>

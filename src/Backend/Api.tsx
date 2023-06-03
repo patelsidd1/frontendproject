@@ -1,7 +1,7 @@
 import axios, { AxiosError } from "axios";
 import Admin from './Models/Admin';
 import Institute from "./Models/Institute";
-const BASE_URL = 'https://a375-2405-201-600d-d067-91c0-ac0-983f-45e6.ngrok-free.app/attendance-backend';
+const BASE_URL = 'https://012a-2409-40e3-19-27c1-e117-13ce-e774-c459.ngrok-free.app/attendance-backend';
 
 const api = axios.create({
   baseURL: BASE_URL,
@@ -113,8 +113,31 @@ export const loginAdmin = async (firebaseId: string) => {
    throw error;
  }
  };
+ export const clearFirebase = async () => {
+  try {
+   const response = await api.get('/admin/deleteAll');
+   console.log(response.data)
+    return response.data
+ } catch (error) {
+   console.error('Error occurred while logging in:', error);
+   throw error;
+ }
+ };
 
 //  -------------Institue-------------
+export const instituteLogin = async (firebaseId: string) => {
+  try {
+   const response = await api.post('/institute/login', {
+     firebaseId,
+   });
+   const admin=Institute.parse(response.data);
+   return admin;
+ } catch (error) {
+   console.error('Error occurred while logging in:', error);
+   throw error;
+ }
+ };
+
  export const registerStaff = async (data: any) => {
   try {
     console.log("axios");
@@ -135,7 +158,9 @@ export const loginAdmin = async (firebaseId: string) => {
   try {
     console.log("axios");
     
-   const response = await api.get('/institute/getAllStaffs');
+   const response = await api.post('/institute/getAllStaffs',{
+    id:1
+   });
    console.log(response.data)
    return response.data
   } catch (error) {
@@ -159,9 +184,9 @@ export const loginAdmin = async (firebaseId: string) => {
    throw error;
  }
  };
- export const getAllCourses = async () => {
+ export const getAllCourses = async (id:number) => {
   try {
-   const response = await api.get('/institute/getAllCourses');
+   const response = await api.post('/institute/getAllCourses',{id:id});
    return response.data;
  } catch (error) {
    console.error('Error occurred while logging in:', error);
@@ -169,3 +194,51 @@ export const loginAdmin = async (firebaseId: string) => {
  }
  };
 
+ export const registerStudent = async (data: any) => {
+  try {
+    console.log("axios");
+    
+    console.log(data)
+   const response = await api.post('/institute/registerNewStudent', 
+     data,
+   );
+    const institue =Institute.parse(response.data)
+    return institue;
+  } catch (error) {
+    console.error('Error occurred while logging in:', error);
+    throw error;
+  }
+ };
+ export const createNewSubject = async (data: any) => {
+  try {
+    console.log("axios");
+    
+    console.log(data)
+   const response = await api.post('/institute/createNewSubject', 
+     data,
+   );
+    const institue =Institute.parse(response.data)
+    return institue;
+  } catch (error) {
+    console.error('Error occurred while logging in:', error);
+    throw error;
+  }
+ };
+ export const getInstituteWithCoursesAndSubjects = async (id:number) => {
+  try {
+   const response = await api.post('/institute/getInstituteWithCoursesAndSubjects',{id:id});
+   return response.data;
+ } catch (error) {
+   console.error('Error occurred while logging in:', error);
+   throw error;
+ }
+ };
+ export const getAttendaceBySubject = async (data:any) => {
+  try {
+   const response = await api.post('/institute/getAttendaceBySubject',data);
+   return response.data;
+ } catch (error) {
+   console.error('Error occurred while logging in:', error);
+   throw error;
+ }
+ };

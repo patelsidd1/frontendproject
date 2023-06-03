@@ -26,11 +26,18 @@ import RoundedButton from "../../Component/RoundedButton";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { getAllCourses, registerAdmin, registerStaff } from "../../Backend/Api";
 import { useNavigate } from "react-router-dom";
-
+import { ExpandMore } from "@mui/icons-material";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Staffs from "./components/Staffs";
 import Institute from "../../Backend/Models/Institute";
+import {
+  ExpansionPanel,
+  ExpansionPanelSummary,
+  ExpansionPanelDetails,
+} from "@material-ui/core";
+import Course from "../../Backend/Models/Course";
+import Subject from "../../Backend/Models/Subject";
 interface AdminFormData {
   name: string;
   firebaseId: string;
@@ -42,13 +49,15 @@ interface AdminFormData {
   dob: Date | null;
   institute: {};
   gender: string;
-  courses:any[]
+  courses: any[];
+  subjects: any[];
 }
 
-const AddStaff: React.FC = () => {
+const AddStaff: React.FC<any> = ({ institute }) => {
   const navigate = useNavigate();
-  const [institutes, setInstitutes] = useState<Institute[]>([]);
-  const [courses, setCourses] = useState<Set<Institute>>(new Set());
+  const [institutes, setInstitutes] = useState<Course[]>([]);
+  const [courses, setCourses] = useState<Set<Course>>(new Set());
+  const [subjects, setSubjects] = useState<Set<Subject>>(new Set());
 
   const [formData, setFormData] = useState<AdminFormData>({
     name: "",
@@ -61,14 +70,14 @@ const AddStaff: React.FC = () => {
     dob: null,
     gender: "",
     institute: {
-      id: 1,
+      id: institute.id,
     },
-    courses:[]
-
+    courses: [],
+    subjects: [],
   });
   useEffect(() => {
     const fetchData = async () => {
-      const data = await getAllCourses();
+      const data = await getAllCourses(institute.id);
       console.log("selectins");
       console.log(data);
       setInstitutes(data);
@@ -94,48 +103,66 @@ const AddStaff: React.FC = () => {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    let course: { id: number; }[]=[];
-    courses.forEach((value)=>{
-      let val={id:value.id}
-      course.push(val)
-    })
-    var data=formData;
-    data.courses=course;
-    console.log(data)
-    registerStaff(formData)
-      .then((admin) => {
-        toast.success("registerAdmin Successful!!\nWelcome " + admin.name);
-        const delay = 2000; // 2 seconds
+    let course: { id: number }[] = [];
+    if(courses.size==0||subjects.size==0){
+      toast.error("Select atleast One Subject and Course")
+    }
+    courses.forEach((value) => {
+      let val = { id: value.id };
+      course.push(val);
+    });
+    let subject: Subject[] = [];
+    subjects.forEach((value) => {
+      subject.push(value);
+    });
+    var data = formData;
+    data.courses = course;
+    data.subjects = subject;
+    console.log(data);
+    // registerStaff(formData)
+    //   .then((admin) => {
+    //     toast.success("registerAdmin Successful!!\nWelcome " + admin.name);
+    //     const delay = 2000; // 2 seconds
 
-        const timeout = setTimeout(() => {
-          // Code to execute after the delay
-          console.log("Delayed code executed");
-        }, delay);
+    //     const timeout = setTimeout(() => {
+    //       // Code to execute after the delay
+    //       console.log("Delayed code executed");
+    //     }, delay);
 
-        return () => {
-          // Cleanup function to cancel the timeout if the component is unmounted
-          clearTimeout(timeout);
-        };
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        toast.error(error.response.data);
-      });
+    //     return () => {
+    //       // Cleanup function to cancel the timeout if the component is unmounted
+    //       clearTimeout(timeout);
+    //     };
+    //   })
+    //   .catch((error) => {
+    //     const errorCode = error.code;
+    //     const errorMessage = error.message;
+    //     toast.error(error.response.data);
+    //   });
   };
-  const handleStaffChange = (event: Institute,checked:boolean) => {
-    let set=courses;
-    console.log(courses)
+  const handleStaffChange = (event: Course, checked: boolean) => {
+    let set = courses;
+    console.log(courses);
 
-    if(checked){
+    if (checked) {
       set.add(event);
-    }
-    else{
+    } else {
       set.delete(event);
-
     }
-    setCourses(set)
-    console.log(courses)
+    setCourses(set);
+    console.log(courses);
+  };
+  const handleSubjectChange = (event: Subject, checked: boolean) => {
+    let set = subjects;
+    console.log(subjects);
+
+    if (checked) {
+      set.add(event);
+    } else {
+      set.delete(event);
+    }
+    setSubjects(set);
+    console.log();
   };
 
   return (
@@ -258,25 +285,86 @@ const AddStaff: React.FC = () => {
                         }}
                         subheader={<li />}
                       >
-                        {institutes.map((staff: Institute, index: any)  => {
+                        {institutes.map((staff: Course, index: any) => {
+                          console.log(staff);
                           return (
-                            <ListItem
-                              key={staff.id}
-                              secondaryAction={
-                                <Checkbox
-                                  edge="end"
-                                   onChange={(event: React.ChangeEvent<HTMLInputElement>, checked: boolean)=>handleStaffChange(staff,checked)}
-                                  // checked={checked.indexOf(value) !== -1}
-                                  inputProps={{ "aria-labelledby": staff.name }}
-                                />
-                              }
-                              disablePadding
-                            >
-                              <ListItemText
-                                id={staff.name}
-                                primary={` ${staff.name }`}
-                              />
-                            </ListItem>
+                            <div>
+                              <ExpansionPanel>
+                                <ExpansionPanelSummary
+                                  expandIcon={<ExpandMore></ExpandMore>}
+                                >
+                                  <p>{staff.name}</p>
+                                  <Checkbox
+                                    edge="end"
+                                    onChange={(
+                                      event: React.ChangeEvent<
+                                        HTMLInputElement
+                                      >,
+                                      checked: boolean
+                                    ) => {
+                                      handleStaffChange(staff, checked);
+                                    }}
+                                    // checked={checked.indexOf(value) !== -1}
+                                    inputProps={{
+                                      "aria-labelledby": staff.name,
+                                    }}
+                                  />
+                                </ExpansionPanelSummary>
+                                <ExpansionPanelDetails>
+                                  <List
+                                    sx={{
+                                      width: "100%",
+                                      maxWidth: 360,
+                                      bgcolor: "background.paper",
+                                      position: "relative",
+                                      overflow: "auto",
+                                      "& ul": { padding: 0 },
+                                    }}
+                                    subheader={<li />}
+                                  >
+                                    {staff.subjects.map(
+                                      (subject: Subject, index: any) => {
+                                        return (
+                                          <div>
+                                            <ListItem
+                                              key={subject.id}
+                                              secondaryAction={
+                                                <Checkbox
+                                                  edge="end"
+                                                  onChange={(
+                                                    event: React.ChangeEvent<
+                                                      HTMLInputElement
+                                                    >,
+                                                    checked: boolean
+                                                  ) => {
+                                                    handleSubjectChange(
+                                                      subject as Institute,
+                                                      checked
+                                                    );
+                                                    // handleStaffChange(staff,true)
+                                                  }}
+                                                  // checked={checked.indexOf(value) !== -1}
+                                                  inputProps={{
+                                                    "aria-labelledby":
+                                                      subject.name,
+                                                  }}
+                                                />
+                                              }
+                                              disablePadding
+                                            >
+                                              <ListItemText
+                                                id={subject.name}
+                                                primary={` ${subject.name}`}
+                                              />
+                                            </ListItem>
+                                          </div>
+                                        );
+                                      }
+                                    )}
+                                  </List>
+                                </ExpansionPanelDetails>
+                              </ExpansionPanel>
+                            </div>
                           );
                         })}
                       </List>

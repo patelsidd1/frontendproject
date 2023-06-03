@@ -7,6 +7,8 @@ import AdminLoginPage from './Pages/Admin/AdminLoginPage';
 import { ToastContainer } from 'react-toastify';
 import InstituteSidebar from './Pages/Institute/InstituteSidebar';
 import AddStaff from './Pages/Institute/AddStaff';
+import InstituteLoginPage from './Pages/Institute/InstituteLoginPage';
+import Attendacelist from './Pages/Institute/Attendance';
 
 // import RegisterAdminPage from './Pages/Admin/RegisterAdminPage';
 
@@ -21,10 +23,10 @@ const App: React.FC = () => {
 
     <Router>
       <Routes>
-        <Route  path="/" element={<InstituteSidebar />} />
+        <Route  path="/" element={< Attendacelist/>} />
         <Route path="/admin-login" element={<AdminLoginPage/>} />
         <Route path="/admin-home" element={<AdminSidebar />} />
-        <Route path="/institute-login" element={<InstituteSidebar/>} />
+        <Route path="/institute-login" element={<InstituteLoginPage/>} />
         <Route path="/institute-home" element={<InstituteSidebar />} />
         
       </Routes>

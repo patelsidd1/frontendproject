@@ -29,29 +29,28 @@ const InstituteSelect: React.FC<InstituteSelectProps> = ({
     null
   );
   const classes = useStyles(institutes);
-  console.log("institutes")
-  console.log(institutes)
+  console.log("institutes");
+  console.log(institutes);
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     const selectedValue = event.target.value as string;
     const institute =
-      institutes.find((item) => item.id.toString() ==selectedValue) || null;
+      institutes.find((item) => item.id.toString() == selectedValue) || null;
     setSelectedInstitute(institute);
-    if(institute){
-      var data={
-        deviceId:deviceId,
-        id:institute.id
-      }
-      addDevice(data) .then((link) => {
-        window.open(link);
-
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.response.data;
-        console.log(errorCode, errorMessage);
-        toast.success(errorMessage);
-      });
-
+    if (institute) {
+      var data = {
+        deviceId: deviceId,
+        id: institute.id,
+      };
+      addDevice(data)
+        .then((link) => {
+          window.open(link);
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.response.data;
+          console.log(errorCode, errorMessage);
+          toast.error(error.response.data);
+        });
     }
   };
 
@@ -60,13 +59,12 @@ const InstituteSelect: React.FC<InstituteSelectProps> = ({
       <InputLabel>Institute</InputLabel>
       <Select
         name="Institute"
-        value={selectedInstitute?selectedInstitute.id:''}
+        value={selectedInstitute ? selectedInstitute.id : ""}
         onChange={handleChange}
       >
         {institutes.map((item, index) => {
           return <MenuItem value={item.id}>{item.name}</MenuItem>;
         })}
-        
       </Select>
     </FormControl>
   );

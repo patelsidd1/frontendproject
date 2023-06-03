@@ -11,6 +11,7 @@ import Button from '@mui/material/Button';
 import { log } from 'console';
 import { getAllInstitutes } from '../../Backend/Api';
 import Institute from '../../Backend/Models/Institute';
+import Admin from '../../Backend/Models/Admin';
 
 const useStyles = makeStyles({
   containerFluid: {
@@ -40,7 +41,7 @@ const useStyles = makeStyles({
 });
 
 
-const InstituteListPage: React.FC = () => {
+const InstituteListPage:React.FC<any> = (admin:Admin) => {
   const classes = useStyles();
   const [instituteList, setInstitutes] = useState<Institute[]>([]);
   useEffect(() => {

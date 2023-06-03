@@ -22,7 +22,7 @@ import { Avatar, Stack } from "@mui/material";
 import { deepOrange } from "@mui/material/colors";
 import RoundedButton from "../../Component/RoundedButton";
 import { withRouter } from "../../Component/WithRouter";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import AdminListPage from "./AdminListPage";
 import AddAdmin from "./AddAdmin";
 import AdminProfile from "./AdminProfile";
@@ -30,6 +30,8 @@ import AddInstitute from "./AddInstitute";
 import Institute from "../../Backend/Models/Institute";
 import InstituteListPage from "./InstituteListPage";
 import DeviceList from "./DeviceList";
+import { clearFirebase } from "../../Backend/Api";
+import Admin from "../../Backend/Models/Admin";
 const drawerWidth = 240;
 
 const openedMixin = (theme: Theme): CSSObject => ({
@@ -83,8 +85,9 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-const AdminSidebar = (props: any) => {
-  console.log(props);
+const AdminSidebar = () => {
+  const {state} = useLocation();
+  const { admin } = state ;
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [pageNo, setPage] = React.useState(0);
@@ -92,12 +95,12 @@ const AdminSidebar = (props: any) => {
     setOpen(!open);
   };
   const pages = [
-    <AdminProfile />,
-    <AddAdmin />,
-    <AdminListPage />,
-    <AddInstitute />,
-    <InstituteListPage />,
-    <DeviceList />,
+    <AdminProfile admin={admin} />,
+    <AddAdmin admin={admin} />,
+    <AdminListPage admin={admin} />,
+    <AddInstitute admin={admin} />,
+    <InstituteListPage admin={admin} />,
+    <DeviceList admin={admin} />,
   ];
   const adminOptions = [
     {
@@ -248,7 +251,10 @@ const AdminSidebar = (props: any) => {
 
         <List style={{ marginTop: `auto` }}>
           <ListItem>
-            <RoundedButton variant="text">Log Out</RoundedButton>
+          <RoundedButton variant="text">Log Out</RoundedButton>
+          <RoundedButton 
+          onClick={()=>{clearFirebase()}}
+          variant="text">Clean Firebase</RoundedButton>
           </ListItem>
         </List>
       </Drawer>

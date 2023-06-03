@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom'
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Admin from '../../Backend/Models/Admin';
 interface InstituteFormData {
   name: string;
   firebaseId:string;
@@ -20,12 +21,12 @@ interface InstituteFormData {
   
 }
 
-const AddInstitute: React.FC = () => {
+const AddInstitute: React.FC<any> = (admin:Admin)=> {
 const navigate=useNavigate();
 
   const [formData, setFormData] = useState<InstituteFormData>({
     name: '',
-    firebaseId:'MjRP3sphJghK5eaYfrzwn18vNYR2',
+    firebaseId:admin.firebaseId,
     email: '',
     mobile: '',
     address: '',
@@ -59,7 +60,6 @@ const navigate=useNavigate();
     const timeout = setTimeout(() => {
       // Code to execute after the delay
       console.log('Delayed code executed');
-      navigate('/institute-dashboard')
         }, delay);
 
             return () => {

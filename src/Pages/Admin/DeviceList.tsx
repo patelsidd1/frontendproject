@@ -11,6 +11,7 @@ import { getAllAdmins, getAllDevices } from "../../Backend/Api";
 import { log } from "console";
 import Device from "../../Backend/Models/Device";
 import Drop from "./components/InstituteSelect";
+import Admin from "../../Backend/Models/Admin";
 
 const useStyles = makeStyles({
   containerFluid: {
@@ -39,7 +40,7 @@ const useStyles = makeStyles({
   },
 });
 
-const DeviceList: React.FC = () => {
+const DeviceList: React.FC<any> = (admin:Admin) => {
   const classes = useStyles();
   const [deviceList, setDevices] = useState<Device[]>([]);
   useEffect(() => {

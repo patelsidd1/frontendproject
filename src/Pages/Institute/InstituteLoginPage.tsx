@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import { auth } from "../../firebaseConfig";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { loginAdmin, resetPassword } from "../../Backend/Api";
+import { instituteLogin, loginAdmin, resetPassword } from "../../Backend/Api";
 import { log } from "console";
 import { useNavigate } from "react-router-dom";
 import { Stack } from "@mui/material";
@@ -61,23 +61,23 @@ const InstituteLoginPage: React.FC = () => {
         const user = userCredential.user;
         console.log(user);
         toast.success("Credentials Verified");
-        loginAdmin(user.uid)
-          .then((admin) => {
-            toast.success("Login Successful!!\nWelcome " + admin.name);
-            navigate("/admin-home");
+        instituteLogin(user.uid)
+          .then((institute) => {
+            toast.success("Login Successful!!\nWelcome " + institute.name);
+            navigate("/institute-home", { state: { institute: institute } });
           })
           .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
             console.log(errorCode, errorMessage);
-            toast.success(errorMessage);
+            toast.error(error.response.data);
           });
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
         console.log(errorCode, errorMessage);
-        toast.success(errorMessage);
+        toast.error(error.response.data);
       });
   };
   const resetPass = async (event: SyntheticEvent) => {
@@ -85,13 +85,12 @@ const InstituteLoginPage: React.FC = () => {
     resetPassword(email)
       .then((link) => {
         window.open(link);
-
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.response.data;
         console.log(errorCode, errorMessage);
-        toast.success(errorMessage);
+        toast.error(error.response.data);
       });
   };
   return (

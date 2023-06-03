@@ -24,6 +24,7 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AdminSidebar from "./AdminSidebar";
+import Admin from "../../Backend/Models/Admin";
 interface AdminFormData {
   name: string;
   firebaseId: string;
@@ -37,7 +38,7 @@ interface AdminFormData {
   gender: string;
 }
 
-const AddAdmin: React.FC = () => {
+const AddAdmin: React.FC<any> = (admin:Admin) => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState<AdminFormData>({

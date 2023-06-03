@@ -64,20 +64,20 @@ const AdminLoginPage: React.FC = () => {
         loginAdmin(user.uid)
           .then((admin) => {
             toast.success("Login Successful!!\nWelcome " + admin.name);
-            navigate("/admin-home");
+            navigate("/admin-home", { state: { admin: admin } });
           })
           .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
             console.log(errorCode, errorMessage);
-            toast.success(errorMessage);
+            toast.error(error.response.data);
           });
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
         console.log(errorCode, errorMessage);
-        toast.success(errorMessage);
+        toast.error(error.response.data);
       });
   };
   const resetPass = async (event: SyntheticEvent) => {
@@ -85,13 +85,12 @@ const AdminLoginPage: React.FC = () => {
     resetPassword(email)
       .then((link) => {
         window.open(link);
-
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.response.data;
         console.log(errorCode, errorMessage);
-        toast.success(errorMessage);
+        toast.error(error.response.data);
       });
   };
   return (

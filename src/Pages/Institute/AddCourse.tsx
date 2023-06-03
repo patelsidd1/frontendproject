@@ -23,41 +23,30 @@ import { useNavigate } from "react-router-dom";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Institute from "../../Backend/Models/Institute";
 interface AdminFormData {
   name: string; 
-  institute:{}
+  institute:any
 }
 
-const AddCourse: React.FC = () => {
+const AddCourse: React.FC<any> = ({institute}) => {
   const navigate = useNavigate();
-
   const [formData, setFormData] = useState<AdminFormData>({
     name: "",
-    institute:{
-      id:1
-    }
+    institute:institute
 
   });
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
-  };
-  const handleInputChanged = (
-    event: SelectChangeEvent<string>,
-    child: React.ReactNode
-  ) => {
-    const { name, value } = event.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
-  };
-
-  const handleDateChange = (date: Date | null) => {
-    setFormData((prevData) => ({ ...prevData, dob: date }));
+    console.log(formData)
   };
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-
+    
+    console.log(formData)
   registerNewCourse(formData)
       .then((admin) => {
         toast.success(" course registered Successful \n" + admin.name);

@@ -50,7 +50,7 @@ interface Admin {
   dob: string;
   gender: string;
 }
-const AdminListPage: React.FC = () => {
+const AdminListPage: React.FC<any> = (admin:Admin) => {
   const classes = useStyles();
   const [adminList, setAdmins] = useState<Admin[]>([]);
   useEffect(() => {
