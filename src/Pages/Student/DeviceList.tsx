@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core';
-import TextField from '@mui/material/TextField';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Button from '@mui/material/Button';
-
-import { log } from 'console';
-import { getAllInstitutes } from '../../Backend/Api';
-import Institute from '../../Backend/Models/Institute';
-import Admin from '../../Backend/Models/Admin';
+import React, { useEffect, useState } from "react";
+import { makeStyles } from "@material-ui/core";
+import TextField from "@mui/material/TextField";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Button from "@mui/material/Button";
+import { getAllAdmins, getAllDevices } from "../../Backend/Api";
+import { log } from "console";
+import Device from "../../Backend/Models/Device";
+import Drop from "./components/InstituteSelect";
+import Admin from "../../Backend/Models/Admin";
 
 const useStyles = makeStyles({
   containerFluid: {
@@ -23,8 +23,8 @@ const useStyles = makeStyles({
   header: {
     // Add your styles for header class here
     height: 100,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center top',
+    backgroundSize: "cover",
+    backgroundPosition: "center top",
   },
   card: {
     // Add your styles for card class here
@@ -40,39 +40,38 @@ const useStyles = makeStyles({
   },
 });
 
-
-const InstituteListPage:React.FC<any> = ({admin}) => {
+const DeviceList: React.FC<any> = (admin:Admin) => {
   const classes = useStyles();
-  const [instituteList, setInstitutes] = useState<Institute[]>([]);
+  const [deviceList, setDevices] = useState<Device[]>([]);
   useEffect(() => {
-    const fetchInstitutes = async () => {
+    const fetchDevices = async () => {
       try {
-        const response = await getAllInstitutes();
+        const response = await getAllDevices();
         console.log(response);
-        setInstitutes(response);
+        setDevices(response);
       } catch (error) {
         console.error("Error fetching admins:", error);
       }
     };
-    fetchInstitutes()
+    fetchDevices();
   }, []);
-
-
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
-    // Filter InstituteList based on search value and update state
-    const filteredInstituteList = instituteList.filter((institute) =>
-      institute.email.toLowerCase().includes(value.toLowerCase())
-    );
-    setInstitutes(filteredInstituteList);
+    // Filter staffList based on search value and update state
+    // const filteredStaffList = deviceList.filter((staff) =>
+    //   staff.email.toLowerCase().includes(value.toLowerCase())
+    // );
+    // setStaffList(filteredStaffList);
   };
 
   return (
     <div className={classes.containerFluid}>
       <section id="content-wrapper">
         <main role="main" className={`pt-5 main ${classes.mainContent}`}>
-          <div className={`header pb-4 pb-sm-8 pt-5 pt-lg-8 d-flex align-items-center ${classes.header}`}></div>
+          <div
+            className={`header pb-4 pb-sm-8 pt-5 pt-lg-8 d-flex align-items-center ${classes.header}`}
+          ></div>
           <div className={`container-fluid mt--7 ${classes.containerFluid}`}>
             <div className="row">
               <div className="col-xl-12 order-xl-1">
@@ -80,8 +79,8 @@ const InstituteListPage:React.FC<any> = ({admin}) => {
                   <div className={`card-header bg-white border-0`}>
                     <div className={`row align-items-center`}>
                       <div className={`col-8`}>
-                        <h3 className={`mb-0`} style={{ color: 'brown' }}>
-                          ALL INSTITUTES
+                        <h3 className={`mb-0`} style={{ color: "brown" }}>
+                          ALL STAFFS
                         </h3>
                       </div>
                     </div>
@@ -92,37 +91,34 @@ const InstituteListPage:React.FC<any> = ({admin}) => {
                       className={`form-control mb-4 ${classes.formControl}`}
                       id="searchInput"
                       type="text"
-                      placeholder="Search Institute"
+                      placeholder="Search Staff"
                       onChange={handleSearch}
                     />
-                    <h6 className={`heading-small text-muted mb-4 ${classes.headingSmall}`}>InstituteListPage INFORMATION</h6>
+                    <h6
+                      className={`heading-small text-muted mb-4 ${classes.headingSmall}`}
+                    >
+                      STAFFAdminListPage INFORMATION
+                    </h6>
                     <div className={`table-responsive ${classes.table}`}>
                       <Table>
                         <TableHead>
                           <TableRow>
                             <TableCell>#</TableCell>
-                            <TableCell>INSTITUTE Email</TableCell>
+                            <TableCell>Staff Email</TableCell>
                             <TableCell>Name</TableCell>
                             <TableCell>Dept</TableCell>
-                            <TableCell>Manage Institute</TableCell>
+                            <TableCell>Manage Staff</TableCell>
                           </TableRow>
                         </TableHead>
                         <TableBody>
-                          {instituteList.map((institute, index) => (
-                            <TableRow key={institute.email}>
-                              <TableCell>{index + 1}</TableCell>
-                              <TableCell>{institute.email}</TableCell>
-                              <TableCell>{institute.name}</TableCell>
-                              <TableCell>{institute.mobile}</TableCell>
+                          {deviceList.map((staff, index) => (
+                            <TableRow key={"staff.id"}>
+                              <TableCell>{staff.id}</TableCell>
+                              <TableCell>{staff.id}</TableCell>
+                              <TableCell>{staff.id}</TableCell>
+                              <TableCell>{staff.enabled}</TableCell>
                               <TableCell>
-                                <Button
-                                  href={`/institute/settings/institute/${institute.email}`}
-                                  variant="contained"
-                                  size="small"
-                                  color="primary"
-                                >
-                                  Settings
-                                </Button>
+                                <Drop deviceId={staff.id} />
                               </TableCell>
                             </TableRow>
                           ))}
@@ -140,4 +136,4 @@ const InstituteListPage:React.FC<any> = ({admin}) => {
   );
 };
 
-export default InstituteListPage;
+export default DeviceList;

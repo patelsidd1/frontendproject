@@ -38,9 +38,9 @@ interface AdminFormData {
   gender: string;
 }
 
-const AddAdmin: React.FC<any> = ({admin}) => {
+const AddAdmin: React.FC<any> = (admin:Admin) => {
   const navigate = useNavigate();
-  console.log(admin)
+
   const [formData, setFormData] = useState<AdminFormData>({
     name: "",
     firebaseId: "MjRP3sphJghK5eaYfrzwn18vNYR2",

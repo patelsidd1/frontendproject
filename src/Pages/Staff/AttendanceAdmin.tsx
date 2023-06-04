@@ -194,7 +194,7 @@ const AttendaceListAdmin: React.FC = () => {
                       <div className={`row align-items-center`}>
                         <div className={`col-8`}>
                           <h3 className={`mb-0`} style={{ color: "brown" }}>
-                            ALL ATTENDANCE
+                            ALL ADMINS
                           </h3>
                         </div>
                       </div>
@@ -205,7 +205,7 @@ const AttendaceListAdmin: React.FC = () => {
                       <h6
                         className={`heading-small text-muted mb-4 ${classes.headingSmall}`}
                       >
-                        ATTENDANCE LIST INFORMATION
+                        AdminListPage INFORMATION
                       </h6>
                       {institutes ? (
                         <div>
@@ -236,13 +236,7 @@ const AttendaceListAdmin: React.FC = () => {
                               />
                             </Grid>
                             <Grid item xs={12}>
-                              <RoundedButton
-                                variant="contained"
-                                color="primary"
-                                size="large"
-                                type="submit"
-                                onClick={handleSubmit}
-                              >
+                              <RoundedButton onClick={handleSubmit}>
                                 Get
                               </RoundedButton>
                             </Grid>
@@ -293,9 +287,7 @@ const AttendaceListAdmin: React.FC = () => {
                             </TableBody>
                           </Table>
                         </div>
-                      ) : (
-                        <CircularProgress />
-                      )}
+                      ) : <CircularProgress />}
                     </div>
                   </div>
                 </div>
