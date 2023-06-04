@@ -9,6 +9,8 @@ import InstituteSidebar from './Pages/Institute/InstituteSidebar';
 import AddStaff from './Pages/Institute/AddStaff';
 import InstituteLoginPage from './Pages/Institute/InstituteLoginPage';
 import Attendacelist from './Pages/Institute/Attendance';
+import AttendaceListAdmin from './Pages/Admin/AttendanceAdmin';
+import Institute from './Backend/Models/Institute';
 
 // import RegisterAdminPage from './Pages/Admin/RegisterAdminPage';
 
@@ -16,6 +18,11 @@ import Attendacelist from './Pages/Institute/Attendance';
 
 
 const App: React.FC = () => {
+  const institue:any={
+    id:1,
+    name:"aniket"
+  };
+
   return (
     <div>
   {/* <Navbar/> */}
@@ -23,7 +30,8 @@ const App: React.FC = () => {
 
     <Router>
       <Routes>
-        <Route  path="/" element={< Attendacelist/>} />
+        <Route  path="/" element={< 
+          HomePage/>} />
         <Route path="/admin-login" element={<AdminLoginPage/>} />
         <Route path="/admin-home" element={<AdminSidebar />} />
         <Route path="/institute-login" element={<InstituteLoginPage/>} />

@@ -32,6 +32,7 @@ import InstituteListPage from "./InstituteListPage";
 import DeviceList from "./DeviceList";
 import { clearFirebase } from "../../Backend/Api";
 import Admin from "../../Backend/Models/Admin";
+import AttendaceListAdmin from "./AttendanceAdmin";
 const drawerWidth = 240;
 
 const openedMixin = (theme: Theme): CSSObject => ({
@@ -101,6 +102,7 @@ const AdminSidebar = () => {
     <AddInstitute admin={admin} />,
     <InstituteListPage admin={admin} />,
     <DeviceList admin={admin} />,
+    <AttendaceListAdmin/>
   ];
   const adminOptions = [
     {
@@ -123,6 +125,12 @@ const AdminSidebar = () => {
     },
   ];
   const deviceOptions = [
+    {
+      name: "Devices",
+      onClick: 5,
+    },
+  ];
+  const attendanceOptions = [
     {
       name: "Devices",
       onClick: 5,
@@ -217,6 +225,39 @@ const AdminSidebar = () => {
         <Divider />
         <List>
           {deviceOptions.map((item, index) => (
+            <ListItem
+              key={item.name}
+              disablePadding
+              sx={{ display: "block" }}
+              onClick={() => setPage(item.onClick)}
+            >
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? "initial" : "center",
+                  px: 2.5,
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : "auto",
+                    justifyContent: "center",
+                  }}
+                >
+                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                </ListItemIcon>
+                <ListItemText
+                  primary={item.name}
+                  sx={{ opacity: open ? 1 : 0 }}
+                />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+        <Divider />
+        <List>
+          {attendanceOptions.map((item, index) => (
             <ListItem
               key={item.name}
               disablePadding

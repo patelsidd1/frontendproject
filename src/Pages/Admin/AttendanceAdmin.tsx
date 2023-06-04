@@ -17,13 +17,15 @@ import Button from "@mui/material/Button";
 import {
   getAllAdmins,
   getAllCourses,
+  getAllInstitutes,
   getAttendaceBySubject,
+  getAttendanceByInstitute,
   getInstituteWithCoursesAndSubjects,
 } from "../../Backend/Api";
 import { log } from "console";
 import AttendanceData from "../../Backend/Models/AttendanceModel";
 import { KeyOff } from "@mui/icons-material";
-import Staffs from "./components/Staffs";
+import Staffs from "../Institute/components/Staffs";
 import Subject from "../../Backend/Models/Subject";
 import Course from "../../Backend/Models/Course";
 import Institute from "../../Backend/Models/Institute";
@@ -74,14 +76,14 @@ interface Admin {
   endDate: String;
   endDated: Date | null;
 }
-const Attendacelist: React.FC<any> = ({ institute }) => {
-  const [institutes, setInstitutes] = useState<Institute[]>([]);
+const AttendaceListAdmin: React.FC = () => {
+  const [institutes, setInstitutes] = useState<Institute[]>();
   const [courses, setCourse] = useState<Course[]>([]);
   const [subject, setSubjects] = useState<Subject[]>([]);
   const [att, setAttendance] = useState<AttendanceData>();
   const [student, setStudents] = useState<Student[]>([]);
   const [formData, setFormData] = useState<Admin>({
-    instituteId: institute.id,
+    instituteId: 0,
     subjectId: 0,
     courseId: 0,
     studentId: 0,
@@ -91,21 +93,28 @@ const Attendacelist: React.FC<any> = ({ institute }) => {
     endDated: null,
   });
   useEffect(() => {
-    const fetchData = async () => {
-      const data = await getInstituteWithCoursesAndSubjects(institute.id);
-      let instituteR = Institute.parse(data);
-      let isnti:Institute[]=[];
-      isnti.push(instituteR);
-      setCourse(instituteR.courses);
-      setInstitutes(isnti);
+    const fetchInstitutes = async () => {
+      try {
+        const response = await getAllInstitutes();
+        console.log(response);
+        setInstitutes(response);
+      } catch (error) {
+        console.error("Error fetching admins:", error);
+      }
     };
-
-    fetchData();
+    fetchInstitutes();
   }, []);
-  const handleInstituteChange = (event: Institute) => {
+
+  const handleInstituteChange = async (event: Institute) => {
     setCourse(event.courses);
     let data = formData;
     data.instituteId = event.id;
+    const resp = await getInstituteWithCoursesAndSubjects(data.instituteId);
+    let instituteR = Institute.parse(resp);
+    setCourse(instituteR.courses);
+    data.courseId = 0;
+    data.studentId = 0;
+    data.subjectId = 0;
     setFormData(data);
   };
   const handleCourseChange = (event: Course) => {
@@ -142,11 +151,11 @@ const Attendacelist: React.FC<any> = ({ institute }) => {
     data.endDate = new Date(data.endDated!).toLocaleDateString("es-CL");
     console.log(data);
 
-    getAttendaceBySubject(formData)
+    getAttendanceByInstitute(formData)
       .then((data) => {
-        console.log(data)
+        console.log(data);
         console.log(AttendanceData.fromJson(data));
-        setAttendance(AttendanceData.fromJson(data))
+        setAttendance(AttendanceData.fromJson(data));
         // toast.success("Attendacnce retrived");
         const delay = 2000; // 2 seconds
 
@@ -166,129 +175,6 @@ const Attendacelist: React.FC<any> = ({ institute }) => {
         // toast.error(error.response.data);
       });
   };
-  let data = `{
-    "dates": [
-        "2023-03-25",
-        "2023-03-26",
-        "2023-03-27",
-        "2023-03-28",
-        "2023-03-29",
-        "2023-03-30",
-        "2023-03-31",
-        "2023-04-01",
-        "2023-04-02",
-        "2023-04-03",
-        "2023-04-04",
-        "2023-04-05",
-        "2023-04-06",
-        "2023-04-07",
-        "2023-04-08",
-        "2023-04-09",
-        "2023-04-10",
-        "2023-04-11",
-        "2023-04-12",
-        "2023-04-13",
-        "2023-04-14",
-        "2023-04-15",
-        "2023-04-16",
-        "2023-04-17",
-        "2023-04-18",
-        "2023-04-19",
-        "2023-04-20",
-        "2023-04-21",
-        "2023-04-22",
-        "2023-04-23",
-        "2023-04-24",
-        "2023-04-25",
-        "2023-04-26",
-        "2023-04-27",
-        "2023-04-28",
-        "2023-04-29",
-        "2023-04-30",
-        "2023-05-01",
-        "2023-05-02",
-        "2023-05-03",
-        "2023-05-04",
-        "2023-05-05",
-        "2023-05-06",
-        "2023-05-07",
-        "2023-05-08",
-        "2023-05-09",
-        "2023-05-10",
-        "2023-05-11",
-        "2023-05-12",
-        "2023-05-13",
-        "2023-05-14",
-        "2023-05-15",
-        "2023-05-16",
-        "2023-05-17",
-        "2023-05-18",
-        "2023-05-19",
-        "2023-05-20",
-        "2023-05-21",
-        "2023-05-22",
-        "2023-05-23",
-        "2023-05-24",
-        "2023-05-25",
-        "2023-05-26",
-        "2023-05-27",
-        "2023-05-28",
-        "2023-05-29",
-        "2023-05-30",
-        "2023-05-31",
-        "2023-06-01",
-        "2023-06-02"
-    ],
-    "attendaces": [
-      {
-        "Amount": [
-            {
-                "id": 53,
-                "holiday": false,
-                "holidayDescription": null,
-                "date": "2023-06-01",
-                "studentId": 153,
-                "courseId": 1,
-                "subjectId": 1,
-                "instituteId": 1
-            },
-            {
-                "id": 54,
-                "holiday": false,
-                "holidayDescription": null,
-                "date": "2023-06-01",
-                "studentId": 153,
-                "courseId": 1,
-                "subjectId": 1,
-                "instituteId": 1
-            }
-        ]
-    },{
-      "Amount": [
-          {
-              "id": 53,
-              "holiday": false,
-              "holidayDescription": null,
-              "date": "2023-06-01",
-              "studentId": 153,
-              "courseId": 1,
-              "subjectId": 1,
-              "instituteId": 1
-          },
-          {
-              "id": 54,
-              "holiday": false,
-              "holidayDescription": null,
-              "date": "2023-06-01",
-              "studentId": 153,
-              "courseId": 1,
-              "subjectId": 1,
-              "instituteId": 1
-          }
-      ]
-  }
-    ]
-  }`;
   const classes = useStyles();
 
   return (
@@ -320,7 +206,9 @@ const Attendacelist: React.FC<any> = ({ institute }) => {
                       >
                         AdminListPage INFORMATION
                       </h6>
-                      <Grid container spacing={2}>
+                      {institutes ? (
+                        <div>
+                          <Grid container spacing={2}>
                             <Grid item xs={12}>
                               <Grid container spacing={2}>
                                 <Grid item xs={12} sm={6}>
@@ -328,27 +216,6 @@ const Attendacelist: React.FC<any> = ({ institute }) => {
                                     institutes={institutes}
                                     name="Select Institute"
                                     handleChange={handleInstituteChange}
-                                  />
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                  <Staffs
-                                    institutes={courses}
-                                    name="Select Course"
-                                    handleChange={handleCourseChange}
-                                  />
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                  <Staffs
-                                    institutes={subject}
-                                    name="Select Subject"
-                                    handleChange={handleSubjectChange}
-                                  />
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                  <Staffs
-                                    institutes={student}
-                                    name="Select Student"
-                                    handleChange={handleStudentChange}
                                   />
                                 </Grid>
                               </Grid>
@@ -373,6 +240,8 @@ const Attendacelist: React.FC<any> = ({ institute }) => {
                               </RoundedButton>
                             </Grid>
                           </Grid>
+                        </div>
+                      ) : null}
                       {att ? (
                         <div className={`table-responsive ${classes.table}`}>
                           <Table>
@@ -418,7 +287,6 @@ const Attendacelist: React.FC<any> = ({ institute }) => {
                           </Table>
                         </div>
                       ) : null}
-                     
                     </div>
                   </div>
                 </div>
@@ -431,4 +299,4 @@ const Attendacelist: React.FC<any> = ({ institute }) => {
   );
 };
 
-export default Attendacelist;
+export default AttendaceListAdmin;

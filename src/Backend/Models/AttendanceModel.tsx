@@ -27,6 +27,7 @@ class AttendanceAmount {
   courseId: number;
   subjectId: number;
   instituteId: number;
+  value: number;
 
   constructor(data: {
     id: number;
@@ -37,6 +38,8 @@ class AttendanceAmount {
     courseId: number;
     subjectId: number;
     instituteId: number;
+
+  value: number;
   }) {
     this.id = data.id;
     this.holiday = data.holiday;
@@ -46,6 +49,7 @@ class AttendanceAmount {
     this.courseId = data.courseId;
     this.subjectId = data.subjectId;
     this.instituteId = data.instituteId;
+    this.value=data.value
   }
 
   static fromJson(json: any): AttendanceAmount {
@@ -58,6 +62,7 @@ class AttendanceAmount {
       courseId: json.courseId as number,
       subjectId: json.subjectId as number,
       instituteId: json.instituteId as number,
+      value: json.value as number,
     });
   }
 }
