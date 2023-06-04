@@ -3,6 +3,7 @@ import {
   Card,
   CardContent,
   CardHeader,
+  CircularProgress,
   Grid,
   makeStyles,
 } from "@material-ui/core";
@@ -269,7 +270,7 @@ const AttendaceListAdmin: React.FC = () => {
                                                 attendance.date === date
                                             );
                                             const value = matchedAttendance
-                                              ? matchedAttendance.value
+                                              ? `${matchedAttendance.value}%`
                                               : 0;
                                             return (
                                               <TableCell key={date}>
@@ -286,7 +287,7 @@ const AttendaceListAdmin: React.FC = () => {
                             </TableBody>
                           </Table>
                         </div>
-                      ) : null}
+                      ) : <CircularProgress />}
                     </div>
                   </div>
                 </div>

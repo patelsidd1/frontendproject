@@ -132,8 +132,8 @@ const AdminSidebar = () => {
   ];
   const attendanceOptions = [
     {
-      name: "Devices",
-      onClick: 5,
+      name: "Attendance",
+      onClick: 6,
     },
   ];
   return (
