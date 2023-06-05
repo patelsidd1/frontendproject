@@ -70,15 +70,25 @@ const AdminLoginPage: React.FC<any> = ({admin}) => {
             const errorCode = error.code;
             const errorMessage = error.message;
             console.log(errorCode, errorMessage);
-            toast.error(error.response.data);
+            if(error.response.data){
+            toast.error(error.response.data);}
+            else{
+            toast.error(errorMessage);
+
+            }
+
           });
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
         console.log(errorCode, errorMessage);
-        toast.error(error.response.data);
-      });
+        if(error.response.data){
+          toast.error(error.response.data);}
+          else{
+          toast.error(errorMessage);
+          }
+    });
   };
   const resetPass = async (event: SyntheticEvent) => {
     event.preventDefault();
@@ -90,7 +100,11 @@ const AdminLoginPage: React.FC<any> = ({admin}) => {
         const errorCode = error.code;
         const errorMessage = error.response.data;
         console.log(errorCode, errorMessage);
-        toast.error(error.response.data);
+        if(error.response.data){
+          toast.error(error.response.data);}
+          else{
+          toast.error(errorMessage);
+          }
       });
   };
   return (

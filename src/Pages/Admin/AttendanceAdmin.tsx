@@ -19,6 +19,7 @@ import {
   getAllAdmins,
   getAllCourses,
   getAllInstitutes,
+  getAttendance,
   getAttendanceByInstitute,
   getInstituteWithCoursesAndSubjects,
 } from "../../Backend/Api";
@@ -151,7 +152,7 @@ const AttendaceListAdmin: React.FC = () => {
     data.endDate = new Date(data.endDated!).toLocaleDateString("es-CL");
     console.log(data);
 
-    getAttendanceByInstitute(formData)
+    getAttendance(formData)
       .then((data) => {
         console.log(data);
         console.log(AttendanceData.fromJson(data));

@@ -1,7 +1,7 @@
 import axios, { AxiosError } from "axios";
 import Admin from './Models/Admin';
 import Institute from "./Models/Institute";
-const BASE_URL = 'http://localhost:8080/attendance-backend';
+const BASE_URL = 'https://fa6f-2405-201-600d-d067-e095-97ff-8934-86b0.ngrok-free.app/attendance-backend';
 
 const api = axios.create({
   baseURL: BASE_URL,

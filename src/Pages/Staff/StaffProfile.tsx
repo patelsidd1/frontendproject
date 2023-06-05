@@ -6,7 +6,7 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
-import AdminSidebar from "./AdminSidebar";
+import AdminSidebar from "./StaffSidebar";
 import Admin from "../../Backend/Models/Admin";
 
 const useStyles = makeStyles({
@@ -32,7 +32,7 @@ const useStyles = makeStyles({
   },
 });
 
-const AdminProfile: React.FC<any> = (admin:Admin) => {
+const StaffProfile: React.FC<any> = (admin:Admin) => {
   const classes = useStyles();
   console.log(admin)
   // Mock data for demonstration
@@ -229,4 +229,4 @@ const AdminProfile: React.FC<any> = (admin:Admin) => {
   );
 };
 
-export default AdminProfile;
+export default StaffProfile;

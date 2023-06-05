@@ -51,6 +51,7 @@ const StaffListPage: React.FC<any> = (institute:Institute) => {
         setInstitutes(response);
       } catch (error) {
         console.error("Error fetching admins:", error);
+        
       }
     };
     fetchInstitutes()

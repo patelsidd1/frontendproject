@@ -119,26 +119,29 @@ const AddStaff: React.FC<any> = ({ institute }) => {
     data.courses = course;
     data.subjects = subject;
     console.log(data);
-    // registerStaff(formData)
-    //   .then((admin) => {
-    //     toast.success("registerAdmin Successful!!\nWelcome " + admin.name);
-    //     const delay = 2000; // 2 seconds
+    registerStaff(formData)
+      .then((admin) => {
+        toast.success("registerAdmin Successful!!\nWelcome " + admin.name);
+        const delay = 2000; // 2 seconds
 
-    //     const timeout = setTimeout(() => {
-    //       // Code to execute after the delay
-    //       console.log("Delayed code executed");
-    //     }, delay);
+        const timeout = setTimeout(() => {
+          // Code to execute after the delay
+          console.log("Delayed code executed");
+        }, delay);
 
-    //     return () => {
-    //       // Cleanup function to cancel the timeout if the component is unmounted
-    //       clearTimeout(timeout);
-    //     };
-    //   })
-    //   .catch((error) => {
-    //     const errorCode = error.code;
-    //     const errorMessage = error.message;
-    //     toast.error(error.response.data);
-    //   });
+        return () => {
+          // Cleanup function to cancel the timeout if the component is unmounted
+          clearTimeout(timeout);
+        };
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        if(error.response.data){
+          toast.error(error.response.data);}
+          else{
+          toast.error(errorMessage);
+          }      });
   };
   const handleStaffChange = (event: Course, checked: boolean) => {
     let set = courses;
