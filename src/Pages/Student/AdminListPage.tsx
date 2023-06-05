@@ -1,17 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core';
-import TextField from '@mui/material/TextField';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Button from '@mui/material/Button';
-
-import { log } from 'console';
-import { getAllInstitutes } from '../../Backend/Api';
-import Institute from '../../Backend/Models/Institute';
-import Admin from '../../Backend/Models/Admin';
+import React, { useEffect, useState } from "react";
+import { makeStyles } from "@material-ui/core";
+import TextField from "@mui/material/TextField";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Button from "@mui/material/Button";
+import { getAllAdmins } from "../../Backend/Api";
+import { log } from "console";
 
 const useStyles = makeStyles({
   containerFluid: {
@@ -23,8 +20,8 @@ const useStyles = makeStyles({
   header: {
     // Add your styles for header class here
     height: 100,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center top',
+    backgroundSize: "cover",
+    backgroundPosition: "center top",
   },
   card: {
     // Add your styles for card class here
@@ -40,39 +37,51 @@ const useStyles = makeStyles({
   },
 });
 
-
-const InstituteListPage:React.FC<any> = ({admin}) => {
+interface Admin {
+  id: number;
+  name: string;
+  firebaseId: string;
+  authority: string;
+  email: string;
+  mobile: string;
+  address: string;
+  city: string;
+  postalCode: string;
+  dob: string;
+  gender: string;
+}
+const AdminListPage: React.FC<any> = (admin:Admin) => {
   const classes = useStyles();
-  const [instituteList, setInstitutes] = useState<Institute[]>([]);
+  const [adminList, setAdmins] = useState<Admin[]>([]);
   useEffect(() => {
-    const fetchInstitutes = async () => {
+    const fetchAdmins = async () => {
       try {
-        const response = await getAllInstitutes();
+        const response = await getAllAdmins();
         console.log(response);
-        setInstitutes(response);
+        setAdmins(response);
       } catch (error) {
         console.error("Error fetching admins:", error);
       }
     };
-    fetchInstitutes()
+    fetchAdmins();
   }, []);
-
-
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
-    // Filter InstituteList based on search value and update state
-    const filteredInstituteList = instituteList.filter((institute) =>
-      institute.email.toLowerCase().includes(value.toLowerCase())
+    // Filter adminList based on search value and update state
+    const filteredAdminList = adminList.filter((admin) =>
+      admin.email.toLowerCase().includes(value.toLowerCase())
     );
-    setInstitutes(filteredInstituteList);
+    setAdmins(filteredAdminList);
   };
 
   return (
     <div className={classes.containerFluid}>
       <section id="content-wrapper">
         <main role="main" className={`pt-5 main ${classes.mainContent}`}>
-          <div className={`header pb-4 pb-sm-8 pt-5 pt-lg-8 d-flex align-items-center ${classes.header}`}></div>
+          <div
+            className={`header pb-4 pb-sm-8 pt-5 pt-lg-8 d-flex align-items-center ${classes.header}`}
+          ></div>
           <div className={`container-fluid mt--7 ${classes.containerFluid}`}>
             <div className="row">
               <div className="col-xl-12 order-xl-1">
@@ -80,8 +89,8 @@ const InstituteListPage:React.FC<any> = ({admin}) => {
                   <div className={`card-header bg-white border-0`}>
                     <div className={`row align-items-center`}>
                       <div className={`col-8`}>
-                        <h3 className={`mb-0`} style={{ color: 'brown' }}>
-                          ALL INSTITUTES
+                        <h3 className={`mb-0`} style={{ color: "brown" }}>
+                          ALL ADMINS
                         </h3>
                       </div>
                     </div>
@@ -92,31 +101,35 @@ const InstituteListPage:React.FC<any> = ({admin}) => {
                       className={`form-control mb-4 ${classes.formControl}`}
                       id="searchInput"
                       type="text"
-                      placeholder="Search Institute"
+                      placeholder="Search Admin"
                       onChange={handleSearch}
                     />
-                    <h6 className={`heading-small text-muted mb-4 ${classes.headingSmall}`}>InstituteListPage INFORMATION</h6>
+                    <h6
+                      className={`heading-small text-muted mb-4 ${classes.headingSmall}`}
+                    >
+                      AdminListPage INFORMATION
+                    </h6>
                     <div className={`table-responsive ${classes.table}`}>
                       <Table>
                         <TableHead>
                           <TableRow>
                             <TableCell>#</TableCell>
-                            <TableCell>INSTITUTE Email</TableCell>
+                            <TableCell>ADMIN Email</TableCell>
                             <TableCell>Name</TableCell>
                             <TableCell>Dept</TableCell>
-                            <TableCell>Manage Institute</TableCell>
+                            <TableCell>Manage Admin</TableCell>
                           </TableRow>
                         </TableHead>
                         <TableBody>
-                          {instituteList.map((institute, index) => (
-                            <TableRow key={institute.email}>
+                          {adminList.map((admin, index) => (
+                            <TableRow key={admin.email}>
                               <TableCell>{index + 1}</TableCell>
-                              <TableCell>{institute.email}</TableCell>
-                              <TableCell>{institute.name}</TableCell>
-                              <TableCell>{institute.mobile}</TableCell>
+                              <TableCell>{admin.email}</TableCell>
+                              <TableCell>{admin.name}</TableCell>
+                              <TableCell>{admin.mobile}</TableCell>
                               <TableCell>
                                 <Button
-                                  href={`/institute/settings/institute/${institute.email}`}
+                                  href={`/admin/settings/admin/${admin.email}`}
                                   variant="contained"
                                   size="small"
                                   color="primary"
@@ -140,4 +153,4 @@ const InstituteListPage:React.FC<any> = ({admin}) => {
   );
 };
 
-export default InstituteListPage;
+export default AdminListPage;

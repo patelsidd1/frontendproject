@@ -21,7 +21,7 @@ interface InstituteFormData {
   
 }
 
-const AddInstitute:React.FC<any> = ({admin}) => {
+const AddInstitute: React.FC<any> = (admin:Admin)=> {
 const navigate=useNavigate();
 
   const [formData, setFormData] = useState<InstituteFormData>({

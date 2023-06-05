@@ -41,7 +41,7 @@ const useStyles = makeStyles({
 });
 
 
-const InstituteListPage:React.FC<any> = ({admin}) => {
+const InstituteListPage:React.FC<any> = (admin:Admin) => {
   const classes = useStyles();
   const [instituteList, setInstitutes] = useState<Institute[]>([]);
   useEffect(() => {

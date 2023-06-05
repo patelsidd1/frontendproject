@@ -59,7 +59,7 @@ const closedMixin = (theme: Theme): CSSObject => ({
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
-  justifyContent: "flex-start",
+  justifyContent: "flex-end",
   padding: theme.spacing(0, 1),
   // necessary for content to be below app bar
   ...theme.mixins.toolbar,
@@ -138,25 +138,24 @@ const AdminSidebar = () => {
   ];
   return (
     <Box sx={{ display: "flex" }}>
+      <CssBaseline />
 
-      <Drawer variant="permanent" open={open} >
-      <IconButton onClick={handleDrawerClose}>
-    {open === false ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-  </IconButton>
-      <DrawerHeader>
-  <div onClick={() => setPage(0)}>
-    <Stack direction="row" alignItems="center">
-      <Avatar sx={{ bgcolor: deepOrange[500] }}>{admin.name.substring(0, 1)}</Avatar>
-      <Stack direction="column" columnGap={0.5}>
-        <Typography variant="h6" noWrap>{admin.name}</Typography>
-        <Typography variant="subtitle1" noWrap>{admin.email}</Typography>
-        <Typography variant="subtitle2" noWrap>{admin.mobile}</Typography>
-      </Stack>
-    </Stack>
-  </div>
- 
-</DrawerHeader>
-
+      <Drawer variant="permanent" open={open}>
+        <DrawerHeader>
+          <div onClick={() => setPage(0)}>
+            <Stack direction="row">
+              <Avatar sx={{ bgcolor: deepOrange[500] }}>N</Avatar>
+              <Stack direction="column" columnGap={0.5}>
+                <Typography variant="h6">John Doe</Typography>
+                <Typography variant="subtitle1">Subtitle 1</Typography>
+                <Typography variant="subtitle2">Subtitle 2</Typography>
+              </Stack>
+            </Stack>
+          </div>
+          <IconButton onClick={handleDrawerClose}>
+            {open === false ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+          </IconButton>
+        </DrawerHeader>
         <Divider />
         <List>
           {adminOptions.map((item, index) => (

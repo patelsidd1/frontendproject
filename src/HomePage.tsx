@@ -25,7 +25,7 @@ const BackgroundImage = styled('div')({
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     width: '100%',
-    height: '30vh',
+    height: '25vh',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',

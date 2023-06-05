@@ -44,7 +44,7 @@ const RoundedButton = styled(Button)({
   marginTop: 16,
 });
 
-const AdminLoginPage: React.FC<any> = ({admin}) => {
+const AdminLoginPage: React.FC = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

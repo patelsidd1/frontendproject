@@ -107,16 +107,16 @@ const AdminListPage: React.FC<any> = (admin:Admin) => {
                     <h6
                       className={`heading-small text-muted mb-4 ${classes.headingSmall}`}
                     >
-                      AdminListPage INFORMATION
+                      ADMIN PAGE INFORMATION
                     </h6>
                     <div className={`table-responsive ${classes.table}`}>
                       <Table>
                         <TableHead>
                           <TableRow>
                             <TableCell>#</TableCell>
-                            <TableCell>ADMIN Email</TableCell>
+                            <TableCell>Admin Email</TableCell>
                             <TableCell>Name</TableCell>
-                            <TableCell>Dept</TableCell>
+                            <TableCell>Mobile No.</TableCell>
                             <TableCell>Manage Admin</TableCell>
                           </TableRow>
                         </TableHead>
