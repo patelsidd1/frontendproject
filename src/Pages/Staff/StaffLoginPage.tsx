@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import { auth } from "../../firebaseConfig";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { loginAdmin, resetPassword } from "../../Backend/Api";
+import { loginAdmin, loginStaff, resetPassword } from "../../Backend/Api";
 import { log } from "console";
 import { useNavigate } from "react-router-dom";
 import { Stack } from "@mui/material";
@@ -44,7 +44,7 @@ const RoundedButton = styled(Button)({
   marginTop: 16,
 });
 
-const StaffLoginPage: React.FC<any> = ({satff}) => {
+const StaffLoginPage: React.FC<any> = ({ satff }) => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -61,34 +61,32 @@ const StaffLoginPage: React.FC<any> = ({satff}) => {
         const user = userCredential.user;
         console.log(user);
         toast.success("Credentials Verified");
-        loginAdmin(user.uid)
-          .then((admin) => {
-            toast.success("Login Successful!!\nWelcome " + admin.name);
-            navigate("/admin-home", { state: { admin: admin } });
+        loginStaff(user.uid)
+          .then((staff) => {
+            toast.success("Login Successful!!\nWelcome " + staff.name);
+            navigate("/staff-home", { state: { staff: staff } });
           })
           .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
             console.log(errorCode, errorMessage);
-            if(error.response.data){
-            toast.error(error.response.data);}
-            else{
-            toast.error(errorMessage);
-
+            if (error.response) {
+              toast.error(error.response.data);
+            } else {
+              toast.error(errorMessage);
             }
-
           });
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
         console.log(errorCode, errorMessage);
-        if(error.response.data){
-          toast.error(error.response.data);}
-          else{
+        if (error.response.data) {
+          toast.error(error.response.data);
+        } else {
           toast.error(errorMessage);
-          }
-    });
+        }
+      });
   };
   const resetPass = async (event: SyntheticEvent) => {
     event.preventDefault();
@@ -100,11 +98,11 @@ const StaffLoginPage: React.FC<any> = ({satff}) => {
         const errorCode = error.code;
         const errorMessage = error.response.data;
         console.log(errorCode, errorMessage);
-        if(error.response.data){
-          toast.error(error.response.data);}
-          else{
+        if (error.response.data) {
+          toast.error(error.response.data);
+        } else {
           toast.error(errorMessage);
-          }
+        }
       });
   };
   return (

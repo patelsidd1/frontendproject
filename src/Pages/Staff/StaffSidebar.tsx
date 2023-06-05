@@ -82,7 +82,7 @@ const Drawer = styled(MuiDrawer, {
 
 const StaffSidebar = () => {
   const {state} = useLocation();
-  const { admin } = state ;
+  const { staff } = state ;
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [pageNo, setPage] = React.useState(0);
@@ -90,8 +90,8 @@ const StaffSidebar = () => {
     setOpen(!open);
   };
   const pages = [
-    <StaffProfile admin={admin} />,
-    <AttendaceListAdmin/>
+    <StaffProfile staff={staff} />,
+    <AttendaceListAdmin staffProp={staff}/>
   ];
   const adminOptions = [
     {

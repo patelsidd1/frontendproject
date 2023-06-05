@@ -3,6 +3,7 @@ import {
   Card,
   CardContent,
   CardHeader,
+  Checkbox,
   CircularProgress,
   Grid,
   makeStyles,
@@ -19,8 +20,10 @@ import {
   getAllAdmins,
   getAllCourses,
   getAllInstitutes,
+  getAttendance,
   getAttendanceByInstitute,
   getInstituteWithCoursesAndSubjects,
+  verifyAttendance,
 } from "../../Backend/Api";
 import { log } from "console";
 import AttendanceData from "../../Backend/Models/AttendanceModel";
@@ -38,6 +41,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { registerAdmin } from "../../Backend/Api";
 import { useNavigate } from "react-router-dom";
 import Staff from "../../Backend/Models/Staff";
+import { toast } from "react-toastify";
 
 const useStyles = makeStyles({
   containerFluid: {
@@ -73,11 +77,23 @@ interface Admin {
   studentId: number;
   startDated: Date | null;
   startDate: String;
- 
+  endDate: String;
+  verfied: Boolean;
 }
-const AttendaceListStaff: React.FC<any> = ({staffProp}) => {
+interface Attendance {
+  verfied: boolean;
+  instituteId: number;
+  subjectId: number;
+  courseId: number;
+  studentId: number;
+  date: String;
+}
+const AttendaceListStaff: React.FC<any> = ({ staffProp }) => {
+  console.log(staffProp);
   const [courses, setCourse] = useState<Course[]>([]);
   const [subject, setSubjects] = useState<Subject[]>([]);
+  const set: Set<number> = new Set();
+  const extraSet: Set<Attendance> = new Set();
   const [att, setAttendance] = useState<AttendanceData>();
   const [formData, setFormData] = useState<Admin>({
     instituteId: 0,
@@ -85,29 +101,53 @@ const AttendaceListStaff: React.FC<any> = ({staffProp}) => {
     courseId: 0,
     studentId: 0,
     startDate: "",
+    endDate: "",
     startDated: null,
+    verfied: false,
   });
   useEffect(() => {
     const fetchInstitutes = async () => {
-      let staff:Staff=staffProp;
+      let staff: Staff = staffProp;
       setCourse(staff.courses);
-      setSubjects(staff.subjects);      
     };
     fetchInstitutes();
   }, []);
 
-  const handleInstituteChange = async (event: Institute) => {
-    setCourse(event.courses);
-    let data = formData;
-    data.instituteId = event.id;
-    const resp = await getInstituteWithCoursesAndSubjects(data.instituteId);
-    let instituteR = Institute.parse(resp);
-    setCourse(instituteR.courses);
-    data.courseId = 0;
-    data.studentId = 0;
-    data.subjectId = 0;
-    setFormData(data);
+  const handleVerfied = (id: number, checked: Boolean) => {
+    if (checked) {
+      set.add(id);
+    } else {
+      set.delete(id);
+    }
+    console.log(set);
   };
+  const createNew = () => {
+    let values: number[] = Array.from(set.values());
+    let data = {
+      verifyList: values,
+    };
+    verifyAttendance(data)
+      .then((data) => {
+        toast.success("Attendacnce verified");
+        const delay = 2000; // 2 seconds
+
+        const timeout = setTimeout(() => {
+          // Code to execute after the delay
+          console.log("Delayed code executed");
+        }, delay);
+
+        return () => {
+          // Cleanup function to cancel the timeout if the component is unmounted
+          clearTimeout(timeout);
+        };
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        toast.error(errorMessage);
+      });
+  };
+
   const handleCourseChange = (event: Course) => {
     setSubjects(event.subjects);
     let data = formData;
@@ -119,49 +159,46 @@ const AttendaceListStaff: React.FC<any> = ({staffProp}) => {
     data.subjectId = event.id;
     setFormData(data);
   };
-  const handleStudentChange = (event: Student) => {
-    let data = formData;
-    data.studentId = event.id;
-    setFormData(data);
-  };
+
   const handleStartDateChange = (date: Date | null) => {
     let data = formData;
     data.startDated = date;
     setFormData(data);
+    console.log(formData);
   };
-  const handleEndDateChange = (date: Date | null) => {
-    let data = formData;
-    setFormData(data);
-  };
+
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     let data = formData;
-    data.startDate = new Date(data.startDated!).toLocaleDateString("es-CL");
+    data.instituteId = staffProp.institute.id;
+    if (data.startDated == null) return;
+    formData.startDate = new Date(data.startDated!).toLocaleDateString("es-CL");
+    formData.endDate = new Date(data.startDated!).toLocaleDateString("es-CL");
     console.log(data);
 
-    // getAttendanceByInstitute(formData)
-    //   .then((data) => {
-    //     console.log(data);
-    //     console.log(AttendanceData.fromJson(data));
-    //     setAttendance(AttendanceData.fromJson(data));
-    //     // toast.success("Attendacnce retrived");
-    //     const delay = 2000; // 2 seconds
+    getAttendance(formData)
+      .then((data) => {
+        console.log(data);
+        console.log(AttendanceData.fromJson(data));
+        setAttendance(AttendanceData.fromJson(data));
+        // toast.success("Attendacnce retrived");
+        const delay = 2000; // 2 seconds
 
-    //     const timeout = setTimeout(() => {
-    //       // Code to execute after the delay
-    //       console.log("Delayed code executed");
-    //     }, delay);
+        const timeout = setTimeout(() => {
+          // Code to execute after the delay
+          console.log("Delayed code executed");
+        }, delay);
 
-    //     return () => {
-    //       // Cleanup function to cancel the timeout if the component is unmounted
-    //       clearTimeout(timeout);
-    //     };
-    //   })
-    //   .catch((error) => {
-    //     const errorCode = error.code;
-    //     const errorMessage = error.message;
-    //     // toast.error(error.response.data);
-    //   });
+        return () => {
+          // Cleanup function to cancel the timeout if the component is unmounted
+          clearTimeout(timeout);
+        };
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        toast.error(error.response.data);
+      });
   };
   const classes = useStyles();
 
@@ -197,7 +234,6 @@ const AttendaceListStaff: React.FC<any> = ({staffProp}) => {
                       <Grid container spacing={2}>
                         <Grid item xs={12}>
                           <Grid container spacing={2}>
-                            
                             <Grid item xs={12} sm={6}>
                               <Staffs
                                 institutes={courses}
@@ -212,7 +248,6 @@ const AttendaceListStaff: React.FC<any> = ({staffProp}) => {
                                 handleChange={handleSubjectChange}
                               />
                             </Grid>
-                            
                           </Grid>
                         </Grid>
                         <Grid item xs={12} sm={6}>
@@ -222,7 +257,7 @@ const AttendaceListStaff: React.FC<any> = ({staffProp}) => {
                             onChange={handleStartDateChange}
                           />
                         </Grid>
-                      
+
                         <Grid item xs={12}>
                           <RoundedButton onClick={handleSubmit}>
                             Get
@@ -256,11 +291,49 @@ const AttendaceListStaff: React.FC<any> = ({staffProp}) => {
                                                 attendance.date === date
                                             );
                                             const value = matchedAttendance
-                                              ? `${matchedAttendance.value}%`
-                                              : 0;
+                                              ? true
+                                              : false;
+
+                                            if (matchedAttendance)
+                                              set.add(matchedAttendance.id);
+
                                             return (
                                               <TableCell key={date}>
-                                                {value}
+                                                {date == "Total" ? (
+                                                  value ? (
+                                                    1
+                                                  ) : (
+                                                    0
+                                                  )
+                                                ) : formData.subjectId == 0 ? (
+                                                  matchedAttendance ? (
+                                                    matchedAttendance.value
+                                                  ) : (
+                                                    0
+                                                  )
+                                                ) : (
+                                                  <Checkbox
+                                                    edge="end"
+                                                    defaultChecked={value}
+                                                    disabled={!value}
+                                                    onChange={(
+                                                      event: React.ChangeEvent<
+                                                        HTMLInputElement
+                                                      >,
+                                                      checked: boolean
+                                                    ) => {
+                                                      if (
+                                                        matchedAttendance !=
+                                                        null
+                                                      ) {
+                                                        handleVerfied(
+                                                          matchedAttendance.id,
+                                                          checked
+                                                        );
+                                                      }
+                                                    }}
+                                                  />
+                                                )}
                                               </TableCell>
                                             );
                                           })}
@@ -273,8 +346,13 @@ const AttendaceListStaff: React.FC<any> = ({staffProp}) => {
                             </TableBody>
                           </Table>
                         </div>
-                      ) : <CircularProgress />}
+                      ) : (
+                        <CircularProgress />
+                      )}
                     </div>
+                    {att ? (
+                      <RoundedButton onClick={createNew}>Save</RoundedButton>
+                    ) : null}
                   </div>
                 </div>
               </div>

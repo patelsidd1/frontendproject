@@ -13,6 +13,7 @@ import AttendaceListAdmin from './Pages/Admin/AttendanceAdmin';
 import Institute from './Backend/Models/Institute';
 import AttendaceListStaff from './Pages/Staff/AttendaceListStaff';
 import StaffLoginPage from './Pages/Staff/StaffLoginPage';
+import StaffSidebar from './Pages/Staff/StaffSidebar';
 
 // import RegisterAdminPage from './Pages/Admin/RegisterAdminPage';
 
@@ -38,6 +39,7 @@ const App: React.FC = () => {
         <Route path="/admin-home" element={<AdminSidebar />} />
         <Route path="/institute-login" element={<InstituteLoginPage/>} />
         <Route path="/institute-home" element={<InstituteSidebar />} />
+        <Route path="/staff-home" element={<StaffSidebar />} />
         
       </Routes>
     </Router>
