@@ -23,16 +23,10 @@ import { deepOrange } from "@mui/material/colors";
 import RoundedButton from "../../Component/RoundedButton";
 import { withRouter } from "../../Component/WithRouter";
 import { Link, useLocation } from "react-router-dom";
-import AdminListPage from "./AdminListPage";
-import AddAdmin from "./AddAdmin";
-import AdminProfile from "./AdminProfile";
-import AddInstitute from "./AddInstitute";
-import Institute from "../../Backend/Models/Institute";
-import InstituteListPage from "./InstituteListPage";
-import DeviceList from "./DeviceList";
 import { clearFirebase } from "../../Backend/Api";
 import Admin from "../../Backend/Models/Admin";
-import AttendaceListAdmin from "./AttendanceAdmin";
+import AttendaceListAdmin from "./AttendaceListStaff";
+import StaffProfile from "./StaffProfile";
 const drawerWidth = 240;
 
 const openedMixin = (theme: Theme): CSSObject => ({
@@ -86,7 +80,7 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-const AdminSidebar = () => {
+const StaffSidebar = () => {
   const {state} = useLocation();
   const { admin } = state ;
   const theme = useTheme();
@@ -96,44 +90,13 @@ const AdminSidebar = () => {
     setOpen(!open);
   };
   const pages = [
-    <AdminProfile admin={admin} />,
-    <AddAdmin admin={admin} />,
-    <AdminListPage admin={admin} />,
-    <AddInstitute admin={admin} />,
-    <InstituteListPage admin={admin} />,
-    <DeviceList admin={admin} />,
+    <StaffProfile admin={admin} />,
     <AttendaceListAdmin/>
   ];
   const adminOptions = [
     {
       name: "Add Admins",
       onClick: 1,
-    },
-    {
-      name: "All Admins",
-      onClick: 2,
-    },
-  ];
-  const institueOptions = [
-    {
-      name: "Add Institutes",
-      onClick: 3,
-    },
-    {
-      name: "All Institutes",
-      onClick: 4,
-    },
-  ];
-  const deviceOptions = [
-    {
-      name: "Devices",
-      onClick: 5,
-    },
-  ];
-  const attendanceOptions = [
-    {
-      name: "Attendance",
-      onClick: 6,
     },
   ];
   return (
@@ -190,106 +153,6 @@ const AdminSidebar = () => {
           ))}
         </List>
         <Divider />
-        <List>
-          {institueOptions.map((item, index) => (
-            <ListItem
-              key={item.name}
-              disablePadding
-              sx={{ display: "block" }}
-              onClick={() => setPage(item.onClick)}
-            >
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
-                  }}
-                >
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText
-                  primary={item.name}
-                  sx={{ opacity: open ? 1 : 0 }}
-                />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-        <Divider />
-        <List>
-          {deviceOptions.map((item, index) => (
-            <ListItem
-              key={item.name}
-              disablePadding
-              sx={{ display: "block" }}
-              onClick={() => setPage(item.onClick)}
-            >
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
-                  }}
-                >
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText
-                  primary={item.name}
-                  sx={{ opacity: open ? 1 : 0 }}
-                />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-        <Divider />
-        <List>
-          {attendanceOptions.map((item, index) => (
-            <ListItem
-              key={item.name}
-              disablePadding
-              sx={{ display: "block" }}
-              onClick={() => setPage(item.onClick)}
-            >
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
-                  }}
-                >
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText
-                  primary={item.name}
-                  sx={{ opacity: open ? 1 : 0 }}
-                />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-        <Divider />
-
         <List style={{ marginTop: `auto` }}>
           <ListItem>
           <RoundedButton variant="text">Log Out</RoundedButton>
@@ -305,4 +168,4 @@ const AdminSidebar = () => {
     </Box>
   );
 };
-export default AdminSidebar;
+export default StaffSidebar;

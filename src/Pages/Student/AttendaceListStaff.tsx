@@ -76,7 +76,7 @@ interface Admin {
   endDate: String;
   endDated: Date | null;
 }
-const AttendaceListAdmin: React.FC = () => {
+const AttendaceListStaff: React.FC = () => {
   const [institutes, setInstitutes] = useState<Institute[]>();
   const [courses, setCourse] = useState<Course[]>([]);
   const [subject, setSubjects] = useState<Subject[]>([]);
@@ -222,18 +222,12 @@ const AttendaceListAdmin: React.FC = () => {
                             </Grid>
                             <Grid item xs={12} sm={6}>
                               <DatePicker
-                                label="Start Date"
+                                label="Select Date"
                                 value={formData.startDated as Date}
                                 onChange={handleStartDateChange}
                               />
                             </Grid>
-                            <Grid item xs={12} sm={6}>
-                              <DatePicker
-                                label="End Date"
-                                value={formData.endDated as Date}
-                                onChange={handleEndDateChange}
-                              />
-                            </Grid>
+                           
                             <Grid item xs={12}>
                               <RoundedButton onClick={handleSubmit}>
                                 Get
@@ -299,4 +293,4 @@ const AttendaceListAdmin: React.FC = () => {
   );
 };
 
-export default AttendaceListAdmin;
+export default AttendaceListStaff;

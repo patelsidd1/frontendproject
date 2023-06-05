@@ -47,8 +47,11 @@ const HiddenText = styled('p')(({ theme }) => ({
 }));
 
 const HomePage: React.FC = () => {
-  return (
+  return ( 
+    
     <div >
+      
+
         <BackgroundImage>
             <h2> </h2>
        

@@ -37,6 +37,7 @@ import RoundedButton from "../../Component/RoundedButton";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { registerAdmin } from "../../Backend/Api";
 import { useNavigate } from "react-router-dom";
+import Staff from "../../Backend/Models/Staff";
 
 const useStyles = makeStyles({
   containerFluid: {
@@ -71,36 +72,26 @@ interface Admin {
   courseId: number;
   studentId: number;
   startDated: Date | null;
-
   startDate: String;
-  endDate: String;
-  endDated: Date | null;
+ 
 }
-const AttendaceListStaff: React.FC = () => {
-  const [institutes, setInstitutes] = useState<Institute[]>();
+const AttendaceListStaff: React.FC<any> = ({staffProp}) => {
   const [courses, setCourse] = useState<Course[]>([]);
   const [subject, setSubjects] = useState<Subject[]>([]);
   const [att, setAttendance] = useState<AttendanceData>();
-  const [student, setStudents] = useState<Student[]>([]);
   const [formData, setFormData] = useState<Admin>({
     instituteId: 0,
     subjectId: 0,
     courseId: 0,
     studentId: 0,
     startDate: "",
-    endDate: "",
     startDated: null,
-    endDated: null,
   });
   useEffect(() => {
     const fetchInstitutes = async () => {
-      try {
-        const response = await getAllInstitutes();
-        console.log(response);
-        setInstitutes(response);
-      } catch (error) {
-        console.error("Error fetching admins:", error);
-      }
+      let staff:Staff=staffProp;
+      setCourse(staff.courses);
+      setSubjects(staff.subjects);      
     };
     fetchInstitutes();
   }, []);
@@ -119,7 +110,6 @@ const AttendaceListStaff: React.FC = () => {
   };
   const handleCourseChange = (event: Course) => {
     setSubjects(event.subjects);
-    setStudents(event.students);
     let data = formData;
     data.courseId = event.id;
     setFormData(data);
@@ -141,39 +131,37 @@ const AttendaceListStaff: React.FC = () => {
   };
   const handleEndDateChange = (date: Date | null) => {
     let data = formData;
-    data.endDated = date;
     setFormData(data);
   };
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     let data = formData;
     data.startDate = new Date(data.startDated!).toLocaleDateString("es-CL");
-    data.endDate = new Date(data.endDated!).toLocaleDateString("es-CL");
     console.log(data);
 
-    getAttendanceByInstitute(formData)
-      .then((data) => {
-        console.log(data);
-        console.log(AttendanceData.fromJson(data));
-        setAttendance(AttendanceData.fromJson(data));
-        // toast.success("Attendacnce retrived");
-        const delay = 2000; // 2 seconds
+    // getAttendanceByInstitute(formData)
+    //   .then((data) => {
+    //     console.log(data);
+    //     console.log(AttendanceData.fromJson(data));
+    //     setAttendance(AttendanceData.fromJson(data));
+    //     // toast.success("Attendacnce retrived");
+    //     const delay = 2000; // 2 seconds
 
-        const timeout = setTimeout(() => {
-          // Code to execute after the delay
-          console.log("Delayed code executed");
-        }, delay);
+    //     const timeout = setTimeout(() => {
+    //       // Code to execute after the delay
+    //       console.log("Delayed code executed");
+    //     }, delay);
 
-        return () => {
-          // Cleanup function to cancel the timeout if the component is unmounted
-          clearTimeout(timeout);
-        };
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // toast.error(error.response.data);
-      });
+    //     return () => {
+    //       // Cleanup function to cancel the timeout if the component is unmounted
+    //       clearTimeout(timeout);
+    //     };
+    //   })
+    //   .catch((error) => {
+    //     const errorCode = error.code;
+    //     const errorMessage = error.message;
+    //     // toast.error(error.response.data);
+    //   });
   };
   const classes = useStyles();
 
@@ -206,36 +194,41 @@ const AttendaceListStaff: React.FC = () => {
                       >
                         AdminListPage INFORMATION
                       </h6>
-                      {institutes ? (
-                        <div>
+                      <Grid container spacing={2}>
+                        <Grid item xs={12}>
                           <Grid container spacing={2}>
-                            <Grid item xs={12}>
-                              <Grid container spacing={2}>
-                                <Grid item xs={12} sm={6}>
-                                  <Staffs
-                                    institutes={institutes}
-                                    name="Select Institute"
-                                    handleChange={handleInstituteChange}
-                                  />
-                                </Grid>
-                              </Grid>
-                            </Grid>
+                            
                             <Grid item xs={12} sm={6}>
-                              <DatePicker
-                                label="Select Date"
-                                value={formData.startDated as Date}
-                                onChange={handleStartDateChange}
+                              <Staffs
+                                institutes={courses}
+                                name="Select Course"
+                                handleChange={handleCourseChange}
                               />
                             </Grid>
-                           
-                            <Grid item xs={12}>
-                              <RoundedButton onClick={handleSubmit}>
-                                Get
-                              </RoundedButton>
+                            <Grid item xs={12} sm={6}>
+                              <Staffs
+                                institutes={subject}
+                                name="Select Subject"
+                                handleChange={handleSubjectChange}
+                              />
                             </Grid>
+                            
                           </Grid>
-                        </div>
-                      ) : null}
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                          <DatePicker
+                            label="Start Date"
+                            value={formData.startDated as Date}
+                            onChange={handleStartDateChange}
+                          />
+                        </Grid>
+                      
+                        <Grid item xs={12}>
+                          <RoundedButton onClick={handleSubmit}>
+                            Get
+                          </RoundedButton>
+                        </Grid>
+                      </Grid>
                       {att ? (
                         <div className={`table-responsive ${classes.table}`}>
                           <Table>

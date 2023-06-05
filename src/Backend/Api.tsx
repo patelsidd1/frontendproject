@@ -251,3 +251,15 @@ export const instituteLogin = async (firebaseId: string) => {
    throw error;
   }
  };
+ export const loginStaff = async (firebaseId: string) => {
+  try {
+   const response = await api.post('/staff/login', {
+     firebaseId,
+   });
+   const admin=Admin.parse(response.data);
+   return admin;
+ } catch (error) {
+   console.error('Error occurred while logging in:', error);
+   throw error;
+ }
+ };
