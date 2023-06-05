@@ -115,7 +115,7 @@ const Attendacelist: React.FC<any> = ({ institute }) => {
 
     setSubjects(subject.concat(event.subjects));
     let student: Student[] = [];
-    student.push(new Student(0, "None"));
+    // student.push(new Student(0, "None"));
     setStudents(student.concat(event.students));
     let data = formData;
     data.courseId = event.id;

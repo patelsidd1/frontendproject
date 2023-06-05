@@ -25,8 +25,7 @@ import { withRouter } from "../../Component/WithRouter";
 import { Link, useLocation } from "react-router-dom";
 import { clearFirebase } from "../../Backend/Api";
 import Admin from "../../Backend/Models/Admin";
-import AttendaceListAdmin from "./AttendaceListStaff";
-import StaffProfile from "./StaffProfile";
+import AttendaceListAdmin from "./AttendanceListStudent";
 const drawerWidth = 240;
 
 const openedMixin = (theme: Theme): CSSObject => ({
@@ -89,10 +88,7 @@ const StaffSidebar = () => {
   const handleDrawerClose = () => {
     setOpen(!open);
   };
-  const pages = [
-    <StaffProfile admin={admin} />,
-    <AttendaceListAdmin/>
-  ];
+  
   const adminOptions = [
     {
       name: "Add Admins",
@@ -163,7 +159,7 @@ const StaffSidebar = () => {
         </List>
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        {pages[pageNo]}
+        
       </Box>
     </Box>
   );
