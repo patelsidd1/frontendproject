@@ -17,7 +17,7 @@ import Button from "@mui/material/Button";
 import {
   getAllAdmins,
   getAllCourses,
-  getAttendaceBySubject,
+  getAttendance,
   getInstituteWithCoursesAndSubjects,
 } from "../../Backend/Api";
 import { log } from "console";
@@ -94,23 +94,29 @@ const Attendacelist: React.FC<any> = ({ institute }) => {
     const fetchData = async () => {
       const data = await getInstituteWithCoursesAndSubjects(institute.id);
       let instituteR = Institute.parse(data);
-      let isnti:Institute[]=[];
+      let isnti: Institute[] = [];
       isnti.push(instituteR);
-      setCourse(instituteR.courses);
       setInstitutes(isnti);
     };
 
     fetchData();
   }, []);
   const handleInstituteChange = (event: Institute) => {
-    setCourse(event.courses);
+    let course: Course[] = [];
+    course.push(new Course(0, "none", [], []));
+    setCourse(course.concat(event.courses));
     let data = formData;
     data.instituteId = event.id;
     setFormData(data);
   };
   const handleCourseChange = (event: Course) => {
-    setSubjects(event.subjects);
-    setStudents(event.students);
+    let subject: Subject[] = [];
+    subject.push(new Subject(0, "None"));
+
+    setSubjects(subject.concat(event.subjects));
+    let student: Student[] = [];
+    student.push(new Student(0, "None"));
+    setStudents(student.concat(event.students));
     let data = formData;
     data.courseId = event.id;
     setFormData(data);
@@ -138,15 +144,18 @@ const Attendacelist: React.FC<any> = ({ institute }) => {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     let data = formData;
+    if (data.startDated == null || data.endDated == null) {
+      //toast.error("Please Select a Date")
+      return;
+    }
     data.startDate = new Date(data.startDated!).toLocaleDateString("es-CL");
     data.endDate = new Date(data.endDated!).toLocaleDateString("es-CL");
-    console.log(data);
 
-    getAttendaceBySubject(formData)
+    getAttendance(formData)
       .then((data) => {
-        console.log(data)
+        console.log(data);
         console.log(AttendanceData.fromJson(data));
-        setAttendance(AttendanceData.fromJson(data))
+        setAttendance(AttendanceData.fromJson(data));
         // toast.success("Attendacnce retrived");
         const delay = 2000; // 2 seconds
 
@@ -166,129 +175,7 @@ const Attendacelist: React.FC<any> = ({ institute }) => {
         // toast.error(error.response.data);
       });
   };
-  let data = `{
-    "dates": [
-        "2023-03-25",
-        "2023-03-26",
-        "2023-03-27",
-        "2023-03-28",
-        "2023-03-29",
-        "2023-03-30",
-        "2023-03-31",
-        "2023-04-01",
-        "2023-04-02",
-        "2023-04-03",
-        "2023-04-04",
-        "2023-04-05",
-        "2023-04-06",
-        "2023-04-07",
-        "2023-04-08",
-        "2023-04-09",
-        "2023-04-10",
-        "2023-04-11",
-        "2023-04-12",
-        "2023-04-13",
-        "2023-04-14",
-        "2023-04-15",
-        "2023-04-16",
-        "2023-04-17",
-        "2023-04-18",
-        "2023-04-19",
-        "2023-04-20",
-        "2023-04-21",
-        "2023-04-22",
-        "2023-04-23",
-        "2023-04-24",
-        "2023-04-25",
-        "2023-04-26",
-        "2023-04-27",
-        "2023-04-28",
-        "2023-04-29",
-        "2023-04-30",
-        "2023-05-01",
-        "2023-05-02",
-        "2023-05-03",
-        "2023-05-04",
-        "2023-05-05",
-        "2023-05-06",
-        "2023-05-07",
-        "2023-05-08",
-        "2023-05-09",
-        "2023-05-10",
-        "2023-05-11",
-        "2023-05-12",
-        "2023-05-13",
-        "2023-05-14",
-        "2023-05-15",
-        "2023-05-16",
-        "2023-05-17",
-        "2023-05-18",
-        "2023-05-19",
-        "2023-05-20",
-        "2023-05-21",
-        "2023-05-22",
-        "2023-05-23",
-        "2023-05-24",
-        "2023-05-25",
-        "2023-05-26",
-        "2023-05-27",
-        "2023-05-28",
-        "2023-05-29",
-        "2023-05-30",
-        "2023-05-31",
-        "2023-06-01",
-        "2023-06-02"
-    ],
-    "attendaces": [
-      {
-        "Amount": [
-            {
-                "id": 53,
-                "holiday": false,
-                "holidayDescription": null,
-                "date": "2023-06-01",
-                "studentId": 153,
-                "courseId": 1,
-                "subjectId": 1,
-                "instituteId": 1
-            },
-            {
-                "id": 54,
-                "holiday": false,
-                "holidayDescription": null,
-                "date": "2023-06-01",
-                "studentId": 153,
-                "courseId": 1,
-                "subjectId": 1,
-                "instituteId": 1
-            }
-        ]
-    },{
-      "Amount": [
-          {
-              "id": 53,
-              "holiday": false,
-              "holidayDescription": null,
-              "date": "2023-06-01",
-              "studentId": 153,
-              "courseId": 1,
-              "subjectId": 1,
-              "instituteId": 1
-          },
-          {
-              "id": 54,
-              "holiday": false,
-              "holidayDescription": null,
-              "date": "2023-06-01",
-              "studentId": 153,
-              "courseId": 1,
-              "subjectId": 1,
-              "instituteId": 1
-          }
-      ]
-  }
-    ]
-  }`;
+
   const classes = useStyles();
 
   return (
@@ -321,58 +208,58 @@ const Attendacelist: React.FC<any> = ({ institute }) => {
                         AdminListPage INFORMATION
                       </h6>
                       <Grid container spacing={2}>
-                            <Grid item xs={12}>
-                              <Grid container spacing={2}>
-                                <Grid item xs={12} sm={6}>
-                                  <Staffs
-                                    institutes={institutes}
-                                    name="Select Institute"
-                                    handleChange={handleInstituteChange}
-                                  />
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                  <Staffs
-                                    institutes={courses}
-                                    name="Select Course"
-                                    handleChange={handleCourseChange}
-                                  />
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                  <Staffs
-                                    institutes={subject}
-                                    name="Select Subject"
-                                    handleChange={handleSubjectChange}
-                                  />
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                  <Staffs
-                                    institutes={student}
-                                    name="Select Student"
-                                    handleChange={handleStudentChange}
-                                  />
-                                </Grid>
-                              </Grid>
-                            </Grid>
+                        <Grid item xs={12}>
+                          <Grid container spacing={2}>
                             <Grid item xs={12} sm={6}>
-                              <DatePicker
-                                label="Start Date"
-                                value={formData.startDated as Date}
-                                onChange={handleStartDateChange}
+                              <Staffs
+                                institutes={institutes}
+                                name="Select Institute"
+                                handleChange={handleInstituteChange}
                               />
                             </Grid>
                             <Grid item xs={12} sm={6}>
-                              <DatePicker
-                                label="End Date"
-                                value={formData.endDated as Date}
-                                onChange={handleEndDateChange}
+                              <Staffs
+                                institutes={courses}
+                                name="Select Course"
+                                handleChange={handleCourseChange}
                               />
                             </Grid>
-                            <Grid item xs={12}>
-                              <RoundedButton onClick={handleSubmit}>
-                                Get
-                              </RoundedButton>
+                            <Grid item xs={12} sm={6}>
+                              <Staffs
+                                institutes={subject}
+                                name="Select Subject"
+                                handleChange={handleSubjectChange}
+                              />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                              <Staffs
+                                institutes={student}
+                                name="Select Student"
+                                handleChange={handleStudentChange}
+                              />
                             </Grid>
                           </Grid>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                          <DatePicker
+                            label="Start Date"
+                            value={formData.startDated as Date}
+                            onChange={handleStartDateChange}
+                          />
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                          <DatePicker
+                            label="End Date"
+                            value={formData.endDated as Date}
+                            onChange={handleEndDateChange}
+                          />
+                        </Grid>
+                        <Grid item xs={12}>
+                          <RoundedButton onClick={handleSubmit}>
+                            Get
+                          </RoundedButton>
+                        </Grid>
+                      </Grid>
                       {att ? (
                         <div className={`table-responsive ${classes.table}`}>
                           <Table>
@@ -400,7 +287,7 @@ const Attendacelist: React.FC<any> = ({ institute }) => {
                                                 attendance.date === date
                                             );
                                             const value = matchedAttendance
-                                              ? matchedAttendance.value
+                                              ? `${matchedAttendance.value}%`
                                               : 0;
                                             return (
                                               <TableCell key={date}>
@@ -418,7 +305,6 @@ const Attendacelist: React.FC<any> = ({ institute }) => {
                           </Table>
                         </div>
                       ) : null}
-                     
                     </div>
                   </div>
                 </div>

@@ -21,6 +21,7 @@ const InstituteSelect: React.FC<InstituteSelectProps> = ({
     null
   );
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    event.preventDefault();
     const selectedValue = event.target.value as string;
     const institute =
       institutes.find((item) => item.id.toString() == selectedValue) || null;

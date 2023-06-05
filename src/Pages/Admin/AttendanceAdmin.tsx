@@ -19,7 +19,6 @@ import {
   getAllAdmins,
   getAllCourses,
   getAllInstitutes,
-  getAttendaceBySubject,
   getAttendanceByInstitute,
   getInstituteWithCoursesAndSubjects,
 } from "../../Backend/Api";
