@@ -114,7 +114,12 @@ const AddStudent: React.FC<any> = ({institute}) => {
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
-          toast.error(error.response.data);
+          console.log(errorCode, errorMessage);
+          if(error.response) {
+            toast.error(error.response.data);
+          } else {
+            toast.error(errorMessage);
+          }
         });
     }
     else{

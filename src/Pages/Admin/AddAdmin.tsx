@@ -38,9 +38,9 @@ interface AdminFormData {
   gender: string;
 }
 
-const AddAdmin: React.FC<any> = ({admin}) => {
+const AddAdmin: React.FC<any> = ({ admin }) => {
   const navigate = useNavigate();
-  console.log(admin)
+  console.log(admin);
   const [formData, setFormData] = useState<AdminFormData>({
     name: "",
     firebaseId: "MjRP3sphJghK5eaYfrzwn18vNYR2",
@@ -91,7 +91,12 @@ const AddAdmin: React.FC<any> = ({admin}) => {
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        toast.error(error.response.data);
+        console.log(errorCode, errorMessage);
+        if(error.response) {
+          toast.error(error.response.data);
+        } else {
+          toast.error(errorMessage);
+        }
       });
   };
 

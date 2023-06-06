@@ -65,8 +65,14 @@ const AddCourse: React.FC<any> = ({institute}) => {
       })
       .catch((error) => {
         const errorCode = error.code;
-        const errorMessage = error.message;
-        toast.error(error.response.data);
+            const errorMessage = error.message;
+            console.log(errorCode, errorMessage);
+            if(error.response.data){
+            toast.error(error.response.data);}
+            else{
+            toast.error(errorMessage);
+
+            }
       });
   };
 

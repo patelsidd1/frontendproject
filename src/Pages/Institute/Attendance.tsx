@@ -35,6 +35,7 @@ import RoundedButton from "../../Component/RoundedButton";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { registerAdmin } from "../../Backend/Api";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const useStyles = makeStyles({
   containerFluid: {
@@ -145,7 +146,7 @@ const Attendacelist: React.FC<any> = ({ institute }) => {
     event.preventDefault();
     let data = formData;
     if (data.startDated == null || data.endDated == null) {
-      //toast.error("Please Select a Date")
+      toast.error("Please Select a Date")
       return;
     }
     data.startDate = new Date(data.startDated!).toLocaleDateString("es-CL");
@@ -172,7 +173,13 @@ const Attendacelist: React.FC<any> = ({ institute }) => {
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        // toast.error(error.response.data);
+        console.log(errorCode, errorMessage);
+        if(error.response.data){
+        toast.error(error.response.data);}
+        else{
+        toast.error(errorMessage);
+
+        }
       });
   };
 

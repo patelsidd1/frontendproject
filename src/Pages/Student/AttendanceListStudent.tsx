@@ -39,6 +39,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { registerAdmin } from "../../Backend/Api";
 import { useNavigate } from "react-router-dom";
 import Staff from "../../Backend/Models/Staff";
+import { toast } from "react-toastify";
 
 const useStyles = makeStyles({
   containerFluid: {
@@ -142,8 +143,14 @@ const AttendanceListStudent: React.FC<any> = ({ studentProps }) => {
       })
       .catch((error) => {
         const errorCode = error.code;
-        const errorMessage = error.message;
-        // toast.error(error.response.data);
+            const errorMessage = error.message;
+            console.log(errorCode, errorMessage);
+            if(error.response){
+            toast.error(error.response.data);}
+            else{
+            toast.error(errorMessage);
+
+            }
       });
   };
   const classes = useStyles();

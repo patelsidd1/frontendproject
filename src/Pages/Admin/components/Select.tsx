@@ -47,9 +47,13 @@ const InstituteSelect: React.FC<InstituteSelectProps> = ({
         })
         .catch((error) => {
           const errorCode = error.code;
-          const errorMessage = error.response.data;
+          const errorMessage = error.message;
           console.log(errorCode, errorMessage);
-          toast.error(error.response.data);
+          if(error.response) {
+            toast.error(error.response.data);
+          } else {
+            toast.error(errorMessage);
+          }
         });
     }
   };

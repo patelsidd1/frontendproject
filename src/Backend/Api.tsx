@@ -3,7 +3,7 @@ import Admin from "./Models/Admin";
 import Institute from "./Models/Institute";
 import Staff from "./Models/Staff";
 import Student from "./Models/Student";
-const BASE_URL = "http://localhost:8080/attendance-backend";
+const BASE_URL = "https://fifty-foxes-allow.loca.lt/attendance-backend";
 
 const api = axios.create({
   baseURL: BASE_URL,
@@ -252,7 +252,7 @@ export const loginStaff = async (firebaseId: string) => {
     throw error;
   }
 };
-export const verifyAttendance = async (data:any) => {
+export const verifyAttendance = async (data: any) => {
   try {
     const response = await api.post("/staff/verifyAttendance", data);
   } catch (error) {

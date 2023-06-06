@@ -81,7 +81,7 @@ const StaffLoginPage: React.FC<any> = ({ satff }) => {
         const errorCode = error.code;
         const errorMessage = error.message;
         console.log(errorCode, errorMessage);
-        if (error.response.data) {
+        if(error.response) {
           toast.error(error.response.data);
         } else {
           toast.error(errorMessage);
@@ -98,7 +98,7 @@ const StaffLoginPage: React.FC<any> = ({ satff }) => {
         const errorCode = error.code;
         const errorMessage = error.response.data;
         console.log(errorCode, errorMessage);
-        if (error.response.data) {
+        if(error.response) {
           toast.error(error.response.data);
         } else {
           toast.error(errorMessage);
