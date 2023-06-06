@@ -19,6 +19,7 @@ import {
   getAllAdmins,
   getAllCourses,
   getAllInstitutes,
+  getAttendance,
   getAttendanceByInstitute,
   getInstituteWithCoursesAndSubjects,
 } from "../../Backend/Api";
@@ -73,57 +74,38 @@ interface Admin {
   studentId: number;
   startDated: Date | null;
   startDate: String;
- 
+  endDate: String;
+  endDated: Date | null;
+  verfied:Boolean;
 }
-const AttendanceListStudent: React.FC<any> = ({staffProp}) => {
-  const [courses, setCourse] = useState<Course[]>([]);
+const AttendanceListStudent: React.FC<any> = ({ studentProps }) => {
+  let student:Student=studentProps;
   const [subject, setSubjects] = useState<Subject[]>([]);
   const [att, setAttendance] = useState<AttendanceData>();
   const [formData, setFormData] = useState<Admin>({
-    instituteId: 0,
+    instituteId: student.institute!.id,
     subjectId: 0,
-    courseId: 0,
+    courseId: student.course!.id,
     studentId: 0,
     startDate: "",
+    endDate: "",
     startDated: null,
+    endDated: null,
+    verfied:true
   });
-  useEffect(() => {
-    const fetchInstitutes = async () => {
-      let staff:Staff=staffProp;
-      setCourse(staff.courses);
-      setSubjects(staff.subjects);      
-    };
-    fetchInstitutes();
-  }, []);
 
-  const handleInstituteChange = async (event: Institute) => {
-    setCourse(event.courses);
-    let data = formData;
-    data.instituteId = event.id;
-    const resp = await getInstituteWithCoursesAndSubjects(data.instituteId);
-    let instituteR = Institute.parse(resp);
-    setCourse(instituteR.courses);
-    data.courseId = 0;
-    data.studentId = 0;
-    data.subjectId = 0;
-    setFormData(data);
-  };
-  const handleCourseChange = (event: Course) => {
-    setSubjects(event.subjects);
-    let data = formData;
-    data.courseId = event.id;
-    setFormData(data);
-  };
+  useEffect(() => {
+    let subject: Subject[] = [];
+    subject.push(new Subject(0, "None"));
+    setSubjects(subject.concat(student.subjects!));
+    console.log(student.subjects);
+  }, []);
   const handleSubjectChange = (event: Subject) => {
     let data = formData;
     data.subjectId = event.id;
     setFormData(data);
   };
-  const handleStudentChange = (event: Student) => {
-    let data = formData;
-    data.studentId = event.id;
-    setFormData(data);
-  };
+
   const handleStartDateChange = (date: Date | null) => {
     let data = formData;
     data.startDated = date;
@@ -131,37 +113,38 @@ const AttendanceListStudent: React.FC<any> = ({staffProp}) => {
   };
   const handleEndDateChange = (date: Date | null) => {
     let data = formData;
+    data.endDated = date;
     setFormData(data);
   };
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     let data = formData;
-    data.startDate = new Date(data.startDated!).toLocaleDateString("es-CL");
+    data.startDate = new Date(data.startDated!).toLocaleDateString("es-CL");data.endDate = new Date(data.endDated!).toLocaleDateString("es-CL");
     console.log(data);
 
-    // getAttendanceByInstitute(formData)
-    //   .then((data) => {
-    //     console.log(data);
-    //     console.log(AttendanceData.fromJson(data));
-    //     setAttendance(AttendanceData.fromJson(data));
-    //     // toast.success("Attendacnce retrived");
-    //     const delay = 2000; // 2 seconds
+    getAttendance(formData)
+      .then((data) => {
+        console.log(data);
+        console.log(AttendanceData.fromJson(data));
+        setAttendance(AttendanceData.fromJson(data));
+        // toast.success("Attendacnce retrived");
+        const delay = 2000; // 2 seconds
 
-    //     const timeout = setTimeout(() => {
-    //       // Code to execute after the delay
-    //       console.log("Delayed code executed");
-    //     }, delay);
+        const timeout = setTimeout(() => {
+          // Code to execute after the delay
+          console.log("Delayed code executed");
+        }, delay);
 
-    //     return () => {
-    //       // Cleanup function to cancel the timeout if the component is unmounted
-    //       clearTimeout(timeout);
-    //     };
-    //   })
-    //   .catch((error) => {
-    //     const errorCode = error.code;
-    //     const errorMessage = error.message;
-    //     // toast.error(error.response.data);
-    //   });
+        return () => {
+          // Cleanup function to cancel the timeout if the component is unmounted
+          clearTimeout(timeout);
+        };
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // toast.error(error.response.data);
+      });
   };
   const classes = useStyles();
 
@@ -181,7 +164,7 @@ const AttendanceListStudent: React.FC<any> = ({staffProp}) => {
                       <div className={`row align-items-center`}>
                         <div className={`col-8`}>
                           <h3 className={`mb-0`} style={{ color: "brown" }}>
-                            ALL ADMINS
+                            Attendance
                           </h3>
                         </div>
                       </div>
@@ -192,19 +175,11 @@ const AttendanceListStudent: React.FC<any> = ({staffProp}) => {
                       <h6
                         className={`heading-small text-muted mb-4 ${classes.headingSmall}`}
                       >
-                        AdminListPage INFORMATION
+                        Attendance INFORMATION
                       </h6>
                       <Grid container spacing={2}>
                         <Grid item xs={12}>
                           <Grid container spacing={2}>
-                            
-                            <Grid item xs={12} sm={6}>
-                              <Staffs
-                                institutes={courses}
-                                name="Select Course"
-                                handleChange={handleCourseChange}
-                              />
-                            </Grid>
                             <Grid item xs={12} sm={6}>
                               <Staffs
                                 institutes={subject}
@@ -212,7 +187,6 @@ const AttendanceListStudent: React.FC<any> = ({staffProp}) => {
                                 handleChange={handleSubjectChange}
                               />
                             </Grid>
-                            
                           </Grid>
                         </Grid>
                         <Grid item xs={12} sm={6}>
@@ -222,7 +196,14 @@ const AttendanceListStudent: React.FC<any> = ({staffProp}) => {
                             onChange={handleStartDateChange}
                           />
                         </Grid>
-                      
+                        <Grid item xs={12} sm={6}>
+                          <DatePicker
+                            label="End Date"
+                            value={formData.endDated as Date}
+                            onChange={handleEndDateChange}
+                          />
+                        </Grid>
+
                         <Grid item xs={12}>
                           <RoundedButton onClick={handleSubmit}>
                             Get
@@ -273,7 +254,9 @@ const AttendanceListStudent: React.FC<any> = ({staffProp}) => {
                             </TableBody>
                           </Table>
                         </div>
-                      ) : <CircularProgress />}
+                      ) : (
+                        <CircularProgress />
+                      )}
                     </div>
                   </div>
                 </div>

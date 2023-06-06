@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import { auth } from "../../firebaseConfig";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { loginAdmin, resetPassword } from "../../Backend/Api";
+import { loginAdmin, loginStudent, resetPassword } from "../../Backend/Api";
 import { log } from "console";
 import { useNavigate } from "react-router-dom";
 import { Stack } from "@mui/material";
@@ -44,7 +44,7 @@ const RoundedButton = styled(Button)({
   marginTop: 16,
 });
 
-const StudentLoginPage: React.FC<any> = ({satff}) => {
+const StudentLoginPage: React.FC<any> = ({admin}) => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -61,16 +61,16 @@ const StudentLoginPage: React.FC<any> = ({satff}) => {
         const user = userCredential.user;
         console.log(user);
         toast.success("Credentials Verified");
-        loginAdmin(user.uid)
-          .then((admin) => {
-            toast.success("Login Successful!!\nWelcome " + admin.name);
-            navigate("/admin-home", { state: { admin: admin } });
+        loginStudent(user.uid)
+          .then((student) => {
+            toast.success("Login Successful!!\nWelcome " + student.name);
+            navigate("/student-home", { state: { student: student } });
           })
           .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
             console.log(errorCode, errorMessage);
-            if(error.response.data){
+            if(error.response){
             toast.error(error.response.data);}
             else{
             toast.error(errorMessage);
@@ -83,7 +83,7 @@ const StudentLoginPage: React.FC<any> = ({satff}) => {
         const errorCode = error.code;
         const errorMessage = error.message;
         console.log(errorCode, errorMessage);
-        if(error.response.data){
+        if(error.response){
           toast.error(error.response.data);}
           else{
           toast.error(errorMessage);

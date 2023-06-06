@@ -72,7 +72,6 @@ interface Admin {
   courseId: number;
   studentId: number;
   startDated: Date | null;
-
   startDate: String;
   endDate: String;
   endDated: Date | null;

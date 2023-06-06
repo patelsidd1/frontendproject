@@ -26,6 +26,8 @@ import { Link, useLocation } from "react-router-dom";
 import { clearFirebase } from "../../Backend/Api";
 import Admin from "../../Backend/Models/Admin";
 import AttendaceListAdmin from "./AttendanceListStudent";
+import StudentProfile from "./StudentProfile";
+import AttendanceListStudent from "./AttendanceListStudent";
 const drawerWidth = 240;
 
 const openedMixin = (theme: Theme): CSSObject => ({
@@ -79,19 +81,23 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-const StaffSidebar = () => {
+const StudentSidebar = () => {
   const {state} = useLocation();
-  const { admin } = state ;
+  const { student } = state ;
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [pageNo, setPage] = React.useState(0);
   const handleDrawerClose = () => {
     setOpen(!open);
   };
+  const pages = [
+    <StudentProfile student={student} />,
+    <AttendanceListStudent studentProps={student}/>
+  ];
   
   const adminOptions = [
     {
-      name: "Add Admins",
+      name: "Show Attendance",
       onClick: 1,
     },
   ];
@@ -159,9 +165,9 @@ const StaffSidebar = () => {
         </List>
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        
+        {pages[pageNo]}
       </Box>
     </Box>
   );
 };
-export default StaffSidebar;
+export default StudentSidebar;

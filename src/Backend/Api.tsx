@@ -262,7 +262,7 @@ export const verifyAttendance = async (data:any) => {
 };
 export const loginStudent = async (firebaseId: string) => {
   try {
-    const response = await api.post("/loginStudent", {
+    const response = await api.post("/student/loginStudent", {
       firebaseId,
     });
     const admin = Student.parse(response.data);

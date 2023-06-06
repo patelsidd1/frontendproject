@@ -153,7 +153,7 @@ const InstituteSidebar = (props: any) => {
   ];
   const deviceOptions = [
     {
-      name: "Add Student",
+      name: "All Devices",
       onClick: 9,
     },
   ];

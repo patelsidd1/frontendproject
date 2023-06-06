@@ -218,7 +218,7 @@ const AttendaceListStaff: React.FC<any> = ({ staffProp }) => {
                       <div className={`row align-items-center`}>
                         <div className={`col-8`}>
                           <h3 className={`mb-0`} style={{ color: "brown" }}>
-                            ALL ADMINS
+                            Attendance
                           </h3>
                         </div>
                       </div>
@@ -229,7 +229,7 @@ const AttendaceListStaff: React.FC<any> = ({ staffProp }) => {
                       <h6
                         className={`heading-small text-muted mb-4 ${classes.headingSmall}`}
                       >
-                        AdminListPage INFORMATION
+                        Attendance INFORMATION
                       </h6>
                       <Grid container spacing={2}>
                         <Grid item xs={12}>
