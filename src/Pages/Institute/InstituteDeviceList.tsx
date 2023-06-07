@@ -10,7 +10,7 @@ import Button from "@mui/material/Button";
 import { getAllAdmins, getAllDevices } from "../../Backend/Api";
 import { log } from "console";
 import Device from "../../Backend/Models/Device";
-import Drop from "./components/InstituteSelect";
+import Institute from "../../Backend/Models/Institute";
 
 const useStyles = makeStyles({
   containerFluid: {
@@ -39,7 +39,7 @@ const useStyles = makeStyles({
   },
 });
 
-const InstituteDeviceList: React.FC = () => {
+const InstituteDeviceList: React.FC<any> = (institute:Institute) => {
   const classes = useStyles();
   const [deviceList, setDevices] = useState<Device[]>([]);
   useEffect(() => {
@@ -52,7 +52,7 @@ const InstituteDeviceList: React.FC = () => {
         console.error("Error fetching admins:", error);
       }
     };
-    fetchDevices();
+    // fetchDevices();
   }, []);
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -117,7 +117,7 @@ const InstituteDeviceList: React.FC = () => {
                               <TableCell>{staff.id}</TableCell>
                               <TableCell>{staff.enabled}</TableCell>
                               <TableCell>
-                                <Drop deviceId={staff.id} />
+                                {/* <Drop deviceId={staff.id} /> */}
                               </TableCell>
                             </TableRow>
                           ))}

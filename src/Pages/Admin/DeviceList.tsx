@@ -11,6 +11,7 @@ import { getAllAdmins, getAllDevices } from "../../Backend/Api";
 import { log } from "console";
 import Device from "../../Backend/Models/Device";
 import Drop from "./components/InstituteSelect";
+import Admin from "../../Backend/Models/Admin";
 
 const useStyles = makeStyles({
   containerFluid: {
@@ -39,7 +40,7 @@ const useStyles = makeStyles({
   },
 });
 
-const DeviceList: React.FC = () => {
+const DeviceList: React.FC<any> = (admin:Admin) => {
   const classes = useStyles();
   const [deviceList, setDevices] = useState<Device[]>([]);
   useEffect(() => {
@@ -79,7 +80,7 @@ const DeviceList: React.FC = () => {
                     <div className={`row align-items-center`}>
                       <div className={`col-8`}>
                         <h3 className={`mb-0`} style={{ color: "brown" }}>
-                          ALL STAFFS
+                          ALL DEVICES
                         </h3>
                       </div>
                     </div>
@@ -96,17 +97,17 @@ const DeviceList: React.FC = () => {
                     <h6
                       className={`heading-small text-muted mb-4 ${classes.headingSmall}`}
                     >
-                      STAFFAdminListPage INFORMATION
+                      DEVICE LIST INFORMATION
                     </h6>
                     <div className={`table-responsive ${classes.table}`}>
                       <Table>
                         <TableHead>
                           <TableRow>
-                            <TableCell>#</TableCell>
-                            <TableCell>Staff Email</TableCell>
+                            <TableCell>Sr.No.</TableCell>
+                            <TableCell>DEVICE </TableCell>
                             <TableCell>Name</TableCell>
                             <TableCell>Dept</TableCell>
-                            <TableCell>Manage Staff</TableCell>
+                            <TableCell>INSTITUTE</TableCell>
                           </TableRow>
                         </TableHead>
                         <TableBody>

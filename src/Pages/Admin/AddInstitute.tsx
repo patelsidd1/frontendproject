@@ -1,91 +1,117 @@
-import React, { useState } from 'react';
-import { Container, Grid, Card, CardHeader, CardContent, Typography, TextField, FormControl, InputLabel, Select, MenuItem, Button, SelectChangeEvent } from '@mui/material';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { LocalizationProvider } from '@mui/x-date-pickers';
-import RoundedButton from '../../Component/RoundedButton';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import { registerInstitute } from '../../Backend/Api';
-import { useNavigate } from 'react-router-dom'
+import React, { useState } from "react";
+import {
+  Container,
+  Grid,
+  Card,
+  CardHeader,
+  CardContent,
+  Typography,
+  TextField,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Button,
+  SelectChangeEvent,
+} from "@mui/material";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import RoundedButton from "../../Component/RoundedButton";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { registerInstitute } from "../../Backend/Api";
+import { useNavigate } from "react-router-dom";
 
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Admin from "../../Backend/Models/Admin";
 interface InstituteFormData {
   name: string;
-  firebaseId:string;
+  firebaseId: string;
   email: string;
   mobile: string;
   address: string;
   city: string;
   postalCode: string;
-  
 }
 
-const AddInstitute: React.FC = () => {
-const navigate=useNavigate();
+const AddInstitute: React.FC<any> = ({ admin }) => {
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState<InstituteFormData>({
-    name: '',
-    firebaseId:'MjRP3sphJghK5eaYfrzwn18vNYR2',
-    email: '',
-    mobile: '',
-    address: '',
-    city: '',
-    postalCode: '',
-   
+    name: "",
+    firebaseId: admin.firebaseId,
+    email: "",
+    mobile: "",
+    address: "",
+    city: "",
+    postalCode: "",
   });
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    setFormData(prevData => ({ ...prevData, [name]: value }));
-
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
-  const handleInputChanged = (event: SelectChangeEvent<string>, child: React.ReactNode) => {
+  const handleInputChanged = (
+    event: SelectChangeEvent<string>,
+    child: React.ReactNode
+  ) => {
     const { name, value } = event.target;
-    setFormData(prevData => ({ ...prevData, [name]: value }));
-
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
   const handleDateChange = (date: Date | null) => {
-    setFormData(prevData => ({ ...prevData, dob: date }));
+    setFormData((prevData) => ({ ...prevData, dob: date }));
   };
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
 
-    registerInstitute(formData).then((institute)=>{
-        toast.success("registerInstitute Successful!!\nWelcome " + institute.name)
+    registerInstitute(formData)
+      .then((institute) => {
+        toast.success(
+          "registerInstitute Successful!!\nWelcome " + institute.name
+        );
         const delay = 2000; // 2 seconds
 
-    const timeout = setTimeout(() => {
-      // Code to execute after the delay
-      console.log('Delayed code executed');
-      navigate('/institute-dashboard')
+        const timeout = setTimeout(() => {
+          // Code to execute after the delay
+          console.log("Delayed code executed");
         }, delay);
 
-            return () => {
-            // Cleanup function to cancel the timeout if the component is unmounted
-            clearTimeout(timeout);
-            };
-        
-       }).catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      toast.error(error.response.data)
-  });
-};
+        return () => {
+          // Cleanup function to cancel the timeout if the component is unmounted
+          clearTimeout(timeout);
+        };
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode, errorMessage);
+        if(error.response) {
+          toast.error(error.response.data);
+        } else {
+          toast.error(errorMessage);
+        }
+      });
+  };
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <ToastContainer />
+      <ToastContainer />
 
       <Container>
         <Grid container justifyContent="center" mt={5}>
           <Grid item xs={12} md={6}>
             <Card>
-              <CardHeader title="ADD NEW INSTITUTE" sx={{ bgcolor: 'brown', color: 'white' }} />
+              <CardHeader
+                title="ADD NEW INSTITUTE"
+                sx={{ bgcolor: "brown", color: "white" }}
+              />
               <CardContent>
                 <form onSubmit={handleSubmit}>
-                  <Typography variant="subtitle2" mb={2}>User information</Typography>
+                  <Typography variant="subtitle2" mb={2}>
+                    User information
+                  </Typography>
                   <Grid container spacing={2}>
                     <Grid item xs={12} md={6}>
                       <TextField
@@ -97,7 +123,7 @@ const navigate=useNavigate();
                         onChange={handleInputChange}
                       />
                     </Grid>
-                    
+
                     <Grid item xs={12} md={6}>
                       <TextField
                         label="Name"
@@ -108,10 +134,11 @@ const navigate=useNavigate();
                         onChange={handleInputChange}
                       />
                     </Grid>
-                    
                   </Grid>
 
-                  <Typography variant="subtitle2" mb={2} mt={4}>Contact information</Typography>
+                  <Typography variant="subtitle2" mb={2} mt={4}>
+                    Contact information
+                  </Typography>
                   <Grid container spacing={2}>
                     <Grid item xs={12}>
                       <TextField
@@ -158,7 +185,13 @@ const navigate=useNavigate();
                     </Grid>
                   </Grid>
 
-                  <RoundedButton variant="contained" color="primary" type="submit">REGISTER INSTITUTE</RoundedButton>
+                  <RoundedButton
+                    variant="contained"
+                    color="primary"
+                    type="submit"
+                  >
+                    REGISTER INSTITUTE
+                  </RoundedButton>
                 </form>
               </CardContent>
             </Card>
@@ -167,6 +200,6 @@ const navigate=useNavigate();
       </Container>
     </LocalizationProvider>
   );
-}
+};
 
 export default AddInstitute;

@@ -22,7 +22,7 @@ import { Avatar, Stack } from "@mui/material";
 import { deepOrange } from "@mui/material/colors";
 import RoundedButton from "../../Component/RoundedButton";
 import { withRouter } from "../../Component/WithRouter";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import AdminListPage from "./AdminListPage";
 import AddAdmin from "./AddAdmin";
 import AdminProfile from "./AdminProfile";
@@ -30,6 +30,9 @@ import AddInstitute from "./AddInstitute";
 import Institute from "../../Backend/Models/Institute";
 import InstituteListPage from "./InstituteListPage";
 import DeviceList from "./DeviceList";
+import { clearFirebase } from "../../Backend/Api";
+import Admin from "../../Backend/Models/Admin";
+import AttendaceListAdmin from "./AttendanceAdmin";
 const drawerWidth = 240;
 
 const openedMixin = (theme: Theme): CSSObject => ({
@@ -56,7 +59,7 @@ const closedMixin = (theme: Theme): CSSObject => ({
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
-  justifyContent: "flex-end",
+  justifyContent: "flex-start",
   padding: theme.spacing(0, 1),
   // necessary for content to be below app bar
   ...theme.mixins.toolbar,
@@ -83,8 +86,9 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-const AdminSidebar = (props: any) => {
-  console.log(props);
+const AdminSidebar = () => {
+  const {state} = useLocation();
+  const { admin } = state ;
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [pageNo, setPage] = React.useState(0);
@@ -92,12 +96,13 @@ const AdminSidebar = (props: any) => {
     setOpen(!open);
   };
   const pages = [
-    <AdminProfile />,
-    <AddAdmin />,
-    <AdminListPage />,
-    <AddInstitute />,
-    <InstituteListPage />,
-    <DeviceList />,
+    <AdminProfile admin={admin} />,
+    <AddAdmin admin={admin} />,
+    <AdminListPage admin={admin} />,
+    <AddInstitute admin={admin} />,
+    <InstituteListPage admin={admin} />,
+    <DeviceList admin={admin} />,
+    <AttendaceListAdmin/>
   ];
   const adminOptions = [
     {
@@ -125,26 +130,33 @@ const AdminSidebar = (props: any) => {
       onClick: 5,
     },
   ];
+  const attendanceOptions = [
+    {
+      name: "Attendance",
+      onClick: 6,
+    },
+  ];
   return (
     <Box sx={{ display: "flex" }}>
-      <CssBaseline />
 
-      <Drawer variant="permanent" open={open}>
-        <DrawerHeader>
-          <div onClick={() => setPage(0)}>
-            <Stack direction="row">
-              <Avatar sx={{ bgcolor: deepOrange[500] }}>N</Avatar>
-              <Stack direction="column" columnGap={0.5}>
-                <Typography variant="h6">John Doe</Typography>
-                <Typography variant="subtitle1">Subtitle 1</Typography>
-                <Typography variant="subtitle2">Subtitle 2</Typography>
-              </Stack>
-            </Stack>
-          </div>
-          <IconButton onClick={handleDrawerClose}>
-            {open === false ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-          </IconButton>
-        </DrawerHeader>
+      <Drawer variant="permanent" open={open} >
+      <IconButton onClick={handleDrawerClose}>
+    {open === false ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+  </IconButton>
+      <DrawerHeader>
+  <div onClick={() => setPage(0)}>
+    <Stack direction="row" alignItems="center">
+      <Avatar sx={{ bgcolor: deepOrange[500] }}>{admin.name.substring(0, 1)}</Avatar>
+      <Stack direction="column" columnGap={0.5}>
+        <Typography variant="h6" noWrap>{admin.name}</Typography>
+        <Typography variant="subtitle1" noWrap>{admin.email}</Typography>
+        <Typography variant="subtitle2" noWrap>{admin.mobile}</Typography>
+      </Stack>
+    </Stack>
+  </div>
+ 
+</DrawerHeader>
+
         <Divider />
         <List>
           {adminOptions.map((item, index) => (
@@ -245,10 +257,46 @@ const AdminSidebar = (props: any) => {
           ))}
         </List>
         <Divider />
+        <List>
+          {attendanceOptions.map((item, index) => (
+            <ListItem
+              key={item.name}
+              disablePadding
+              sx={{ display: "block" }}
+              onClick={() => setPage(item.onClick)}
+            >
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? "initial" : "center",
+                  px: 2.5,
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : "auto",
+                    justifyContent: "center",
+                  }}
+                >
+                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                </ListItemIcon>
+                <ListItemText
+                  primary={item.name}
+                  sx={{ opacity: open ? 1 : 0 }}
+                />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+        <Divider />
 
         <List style={{ marginTop: `auto` }}>
           <ListItem>
-            <RoundedButton variant="text">Log Out</RoundedButton>
+          <RoundedButton variant="text">Log Out</RoundedButton>
+          <RoundedButton 
+          onClick={()=>{clearFirebase()}}
+          variant="text">Clean Firebase</RoundedButton>
           </ListItem>
         </List>
       </Drawer>

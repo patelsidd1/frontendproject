@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import { auth } from "../../firebaseConfig";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { instituteLogin, loginAdmin, resetPassword } from "../../Backend/Api";
+import { loginAdmin, loginStudent, resetPassword } from "../../Backend/Api";
 import { log } from "console";
 import { useNavigate } from "react-router-dom";
 import { Stack } from "@mui/material";
@@ -44,7 +44,7 @@ const RoundedButton = styled(Button)({
   marginTop: 16,
 });
 
-const InstituteLoginPage: React.FC = () => {
+const StudentLoginPage: React.FC<any> = ({admin}) => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -61,32 +61,34 @@ const InstituteLoginPage: React.FC = () => {
         const user = userCredential.user;
         console.log(user);
         toast.success("Credentials Verified");
-        instituteLogin(user.uid)
-          .then((institute) => {
-            toast.success("Login Successful!!\nWelcome " + institute.name);
-            navigate("/institute-home", { state: { institute: institute } });
+        loginStudent(user.uid)
+          .then((student) => {
+            toast.success("Login Successful!!\nWelcome " + student.name);
+            navigate("/student-home", { state: { student: student } });
           })
           .catch((error) => {
             const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
-        if(error.response) {
-          toast.error(error.response.data);
-        } else {
-          toast.error(errorMessage);
-        }
+            const errorMessage = error.message;
+            console.log(errorCode, errorMessage);
+            if(error.response){
+            toast.error(error.response.data);}
+            else{
+            toast.error(errorMessage);
+
+            }
+
           });
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
         console.log(errorCode, errorMessage);
-        if(error.response) {
-          toast.error(error.response.data);
-        } else {
+        if(error.response){
+          toast.error(error.response.data);}
+          else{
           toast.error(errorMessage);
-        }
-      });
+          }
+    });
   };
   const resetPass = async (event: SyntheticEvent) => {
     event.preventDefault();
@@ -96,13 +98,13 @@ const InstituteLoginPage: React.FC = () => {
       })
       .catch((error) => {
         const errorCode = error.code;
-        const errorMessage = error.message;
+        const errorMessage = error.response.data;
         console.log(errorCode, errorMessage);
-        if(error.response) {
-          toast.error(error.response.data);
-        } else {
+        if(error.response.data){
+          toast.error(error.response.data);}
+          else{
           toast.error(errorMessage);
-        }
+          }
       });
   };
   return (
@@ -143,4 +145,4 @@ const InstituteLoginPage: React.FC = () => {
   );
 };
 
-export default InstituteLoginPage;
+export default StudentLoginPage;

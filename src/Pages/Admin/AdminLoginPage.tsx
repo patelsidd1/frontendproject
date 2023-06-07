@@ -44,7 +44,7 @@ const RoundedButton = styled(Button)({
   marginTop: 16,
 });
 
-const AdminLoginPage: React.FC = () => {
+const AdminLoginPage: React.FC<any> = ({ admin }) => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -64,20 +64,28 @@ const AdminLoginPage: React.FC = () => {
         loginAdmin(user.uid)
           .then((admin) => {
             toast.success("Login Successful!!\nWelcome " + admin.name);
-            navigate("/admin-home");
+            navigate("/admin-home", { state: { admin: admin } });
           })
           .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
             console.log(errorCode, errorMessage);
-            toast.success(errorMessage);
+            if(error.response) {
+              toast.error(error.response.data);
+            } else {
+              toast.error(errorMessage);
+            }
           });
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
         console.log(errorCode, errorMessage);
-        toast.success(errorMessage);
+        if(error.response) {
+          toast.error(error.response.data);
+        } else {
+          toast.error(errorMessage);
+        }
       });
   };
   const resetPass = async (event: SyntheticEvent) => {
@@ -85,13 +93,16 @@ const AdminLoginPage: React.FC = () => {
     resetPassword(email)
       .then((link) => {
         window.open(link);
-
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.response.data;
         console.log(errorCode, errorMessage);
-        toast.success(errorMessage);
+        if(error.response) {
+          toast.error(error.response.data);
+        } else {
+          toast.error(errorMessage);
+        }
       });
   };
   return (

@@ -9,6 +9,7 @@ import TableRow from "@mui/material/TableRow";
 import Button from "@mui/material/Button";
 import { getAllAdmins } from "../../Backend/Api";
 import { log } from "console";
+import Institute from "../../Backend/Models/Institute";
 
 const useStyles = makeStyles({
   containerFluid: {
@@ -50,7 +51,7 @@ interface Admin {
   dob: string;
   gender: string;
 }
-const StudentListPage: React.FC = () => {
+const StudentListPage: React.FC<any> = (institute:Institute) => {
   const classes = useStyles();
   const [adminList, setAdmins] = useState<Admin[]>([]);
   useEffect(() => {

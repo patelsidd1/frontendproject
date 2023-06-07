@@ -1,3 +1,5 @@
+import Course from "./Course";
+
 class Institute {
     id: number;
     name: string;
@@ -10,6 +12,7 @@ class Institute {
     mobile: string;
     role: string;
     devices: string[];
+    courses:Course[];
   
     constructor(
       id: number,
@@ -22,7 +25,9 @@ class Institute {
       firebaseId: string,
       mobile: string,
       role: string,
-      devices: string[]
+      devices: string[],
+      courses:Course[]
+
     ) {
       this.id = id;
       this.name = name;
@@ -35,6 +40,7 @@ class Institute {
       this.mobile = mobile;
       this.role = role;
       this.devices = devices;
+      this.courses=courses;
     }
   
     static parse(json: any): Institute {
@@ -49,7 +55,8 @@ class Institute {
         json.firebaseId,
         json.mobile,
         json.role,
-        json.devices
+        json.devices,
+        json.courses
       );
     }
 }  

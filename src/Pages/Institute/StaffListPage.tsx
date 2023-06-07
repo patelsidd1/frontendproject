@@ -40,7 +40,7 @@ const useStyles = makeStyles({
 });
 
 
-const StaffListPage: React.FC = () => {
+const StaffListPage: React.FC<any> = (institute:Institute) => {
   const classes = useStyles();
   const [instituteList, setInstitutes] = useState<Institute[]>([]);
   useEffect(() => {
@@ -51,6 +51,7 @@ const StaffListPage: React.FC = () => {
         setInstitutes(response);
       } catch (error) {
         console.error("Error fetching admins:", error);
+        
       }
     };
     fetchInstitutes()

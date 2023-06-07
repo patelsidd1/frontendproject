@@ -50,7 +50,7 @@ interface Admin {
   dob: string;
   gender: string;
 }
-const AdminListPage: React.FC = () => {
+const AdminListPage: React.FC<any> = (admin:Admin) => {
   const classes = useStyles();
   const [adminList, setAdmins] = useState<Admin[]>([]);
   useEffect(() => {
@@ -107,16 +107,16 @@ const AdminListPage: React.FC = () => {
                     <h6
                       className={`heading-small text-muted mb-4 ${classes.headingSmall}`}
                     >
-                      AdminListPage INFORMATION
+                      ADMIN PAGE INFORMATION
                     </h6>
                     <div className={`table-responsive ${classes.table}`}>
                       <Table>
                         <TableHead>
                           <TableRow>
                             <TableCell>#</TableCell>
-                            <TableCell>ADMIN Email</TableCell>
+                            <TableCell>Admin Email</TableCell>
                             <TableCell>Name</TableCell>
-                            <TableCell>Dept</TableCell>
+                            <TableCell>Mobile No.</TableCell>
                             <TableCell>Manage Admin</TableCell>
                           </TableRow>
                         </TableHead>

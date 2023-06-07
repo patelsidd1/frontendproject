@@ -6,7 +6,7 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
-import AdminSidebar from "./AdminSidebar";
+import AdminSidebar from "./StaffSidebar";
 import Admin from "../../Backend/Models/Admin";
 
 const useStyles = makeStyles({
@@ -32,7 +32,7 @@ const useStyles = makeStyles({
   },
 });
 
-const AdminProfile: React.FC<any> = ({admin}) => {
+const StaffProfile: React.FC<any> = (admin:Admin) => {
   const classes = useStyles();
   console.log(admin)
   // Mock data for demonstration
@@ -59,7 +59,7 @@ const AdminProfile: React.FC<any> = ({admin}) => {
                 subheader={
                   <div>
                     <Typography variant="h3">{students.length}</Typography>
-                    <Typography variant="subtitle1">Admin</Typography>
+                    <Typography variant="subtitle1">Students</Typography>
                   </div>
                 }
               />
@@ -89,7 +89,7 @@ const AdminProfile: React.FC<any> = ({admin}) => {
                 subheader={
                   <div>
                     <Typography variant="h3">{staffs.length}</Typography>
-                    <Typography variant="subtitle1">Institute</Typography>
+                    <Typography variant="subtitle1">Staffs</Typography>
                   </div>
                 }
               />
@@ -117,7 +117,7 @@ const AdminProfile: React.FC<any> = ({admin}) => {
                 subheader={
                   <div>
                     <Typography variant="h3">{departments.length}</Typography>
-                    <Typography variant="subtitle1">Devices</Typography>
+                    <Typography variant="subtitle1">Departments</Typography>
                   </div>
                 }
               />
@@ -133,18 +133,55 @@ const AdminProfile: React.FC<any> = ({admin}) => {
               </CardContent>
             </Card>
           </Grid>
+          <Grid item xs={12} sm={3}>
+            <Card className={classes.card}>
+              <CardHeader
+                className={classes.cardHeader}
+                title={
+                  <div>
+                    <i className={`fa fa-book ${classes.cardIcon}`} />
+                  </div>
+                }
+                subheader={
+                  <div>
+                    <Typography variant="h3">{courses.length}</Typography>
+                    <Typography variant="subtitle1">Courses</Typography>
+                  </div>
+                }
+              />
+              <CardContent>
+                <a href="/admin/getAllCourses">
+                  <div className={classes.cardFooter}>
+                    <span className="float-left">View Details</span>
+                    <span className="float-right">
+                      <i className="fa fa-arrow-circle-right" />
+                    </span>
+                  </div>
+                </a>
+              </CardContent>
+            </Card>
           </Grid>
+        </Grid>
         <Grid container spacing={5} className="mt-5">
           <Grid item xs={12}>
             <Card className="card card-profile shadow">
               <Grid container justifyContent="center">
-                
+                <Grid item xs={12} lg={3} order={{ xs: 2, lg: 2 }}>
+                  <div className="card-profile-image">
+                    <a href="#">
+                      <img
+                        src="https://sammilanimahavidyalaya.org/wp-content/uploads/2016/01/student-icon.png"
+                        className="rounded-circle"
+                      />
+                    </a>
+                  </div>
+                </Grid>
               </Grid>
               <CardHeader
                 title={
                   <div className="text-center">
                     <Typography variant="h3">
-                      {admin.name}
+                      {user.name}
                       <span className="font-weight-light">, 21</span>
                     </Typography>
                     <div className="h5 font-weight-300">
@@ -157,7 +194,7 @@ const AdminProfile: React.FC<any> = ({admin}) => {
                     </div>
                     <div>
                       <i className="ni education_hat mr-2" />
-                      GOVERNMENT SCHOLARSHIP
+                      BUNDELKHAND UNIVERSITY, JHANSI
                     </div>
                   </div>
                 }
@@ -192,4 +229,4 @@ const AdminProfile: React.FC<any> = ({admin}) => {
   );
 };
 
-export default AdminProfile;
+export default StaffProfile;

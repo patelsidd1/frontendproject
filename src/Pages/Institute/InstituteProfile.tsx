@@ -6,6 +6,7 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
+import Institute from "../../Backend/Models/Institute";
 
 const useStyles = makeStyles({
   card: {
@@ -30,7 +31,7 @@ const useStyles = makeStyles({
   },
 });
 
-const InstituteProfile: React.FC = () => {
+const InstituteProfile: React.FC<any> = (institute:Institute) => {
   const classes = useStyles();
 
   // Mock data for demonstration
