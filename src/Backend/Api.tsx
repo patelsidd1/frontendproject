@@ -3,7 +3,7 @@ import Admin from "./Models/Admin";
 import Institute from "./Models/Institute";
 import Staff from "./Models/Staff";
 import Student from "./Models/Student";
-const BASE_URL = "https://fifty-foxes-allow.loca.lt/attendance-backend";
+const BASE_URL = "http://localhost:8080/attendance-backend";
 
 const api = axios.create({
   baseURL: BASE_URL,

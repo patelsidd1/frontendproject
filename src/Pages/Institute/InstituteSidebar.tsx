@@ -136,10 +136,10 @@ const InstituteSidebar = (props: any) => {
       name: "Add Subject",
       onClick: 5,
     },
-    {
-      name: "All Subject",
-      onClick: 6,
-    },
+    // {
+    //   name: "All Subject",
+    //   onClick: 6,
+    // },
   ];
   const studentOptions = [
     {

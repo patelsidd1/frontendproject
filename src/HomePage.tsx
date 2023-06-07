@@ -4,11 +4,10 @@ import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
 import { Link } from "react-router-dom";
-
+import background from "./Images/Background.png"
 const BackgroundImage = styled("div")({
   // backgroundImage:' src(./Images/Background.png)',
-  backgroundimage:
-    "url(https://img.freepik.com/free-vector/follow-me-social-business-theme-design_24877-50426.jpg?w=740&t=st=1684666768~exp=1684667368~hmac=c4e44dff5a350f8906e0148cc4d377abc0dadc1f0804877163051b5fced3ef30)",
+  
   backgroundSize: "fill",
   backgroundPosition: "center",
   width: "100%",
@@ -20,7 +19,7 @@ const BackgroundImage = styled("div")({
 
 const BackgroundImageAdmin =  styled(Box)(({ theme }) => ({
   backgroundImage:
-    "url(https://img.freepik.com/free-vector/follow-me-social-business-theme-design_24877-50426.jpg?w=740&t=st=1684666768~exp=1684667368~hmac=c4e44dff5a350f8906e0148cc4d377abc0dadc1f0804877163051b5fced3ef30)",
+    "src(./Images/Background.png)",
   backgroundSize: "cover",
   backgroundPosition: "center",
   backgroundColor: "#f5f5f5",
@@ -32,8 +31,7 @@ const BackgroundImageAdmin =  styled(Box)(({ theme }) => ({
 }));
 
 const HoverableBox = styled(Box)(({ theme }) => ({
-  backgroundImage:
-    "url(https://img.freepik.com/free-vector/follow-me-social-business-theme-design_24877-50426.jpg?w=740&t=st=1684666768~exp=1684667368~hmac=c4e44dff5a350f8906e0148cc4d377abc0dadc1f0804877163051b5fced3ef30)",
+  
   backgroundSize: "cover",
   backgroundPosition: "center",
   backgroundColor: "#f5f5f5",

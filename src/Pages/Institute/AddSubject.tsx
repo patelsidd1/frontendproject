@@ -37,7 +37,7 @@ interface StudentFormData {
   course: any;
 }
 
-const AddSubject: React.FC<any> = ({institute}) => {
+const SujectListPage: React.FC<any> = ({institute}) => {
   console.log(institute)
   const navigate = useNavigate();
   const [institutes, setInstitutes] = useState<Institute[]>([]);
@@ -108,6 +108,7 @@ const AddSubject: React.FC<any> = ({institute}) => {
       });
   };
   const handleCourseChange = (event: any) => {
+    
     setCourse(event);
     formData.course = { id: event.id };
   };
@@ -174,4 +175,4 @@ const AddSubject: React.FC<any> = ({institute}) => {
   );
 };
 
-export default AddSubject;
+export default SujectListPage;

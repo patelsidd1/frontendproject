@@ -45,7 +45,7 @@ const InstituteProfile: React.FC<any> = (institute:Institute) => {
 
   return (
       <div>
-        <Grid container spacing={5} className="mb-5">
+        {/* <Grid container spacing={5} className="mb-5">
           <Grid item xs={12} sm={3}>
             <Card className={classes.card}>
               <CardHeader
@@ -160,20 +160,13 @@ const InstituteProfile: React.FC<any> = (institute:Institute) => {
               </CardContent>
             </Card>
           </Grid>
-        </Grid>
+        </Grid> */}
         <Grid container spacing={5} className="mt-5">
           <Grid item xs={12}>
             <Card className="card card-profile shadow">
               <Grid container justifyContent="center">
                 <Grid item xs={12} lg={3} order={{ xs: 2, lg: 2 }}>
-                  <div className="card-profile-image">
-                    <a href="#">
-                      <img
-                        src="https://sammilanimahavidyalaya.org/wp-content/uploads/2016/01/student-icon.png"
-                        className="rounded-circle"
-                      />
-                    </a>
-                  </div>
+                  
                 </Grid>
               </Grid>
               <CardHeader
